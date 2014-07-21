@@ -11,18 +11,14 @@
     <title>PFC</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="navbar-fixed-top.css" rel="stylesheet">
+    <link href="css/navbar-fixed-top.css" rel="stylesheet">
+    
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-
+    
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -42,7 +38,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">PFC</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -63,9 +59,7 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/">Default</a></li>
-            <li><a href="../navbar-static-top/">Static top</a></li>
-            <li class="active"><a href="./">Fixed top</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#loginModal">Login / Rexistrarse</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -83,6 +77,96 @@
         </p>
       </div>
 
+
+
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Benvid@</h4>
+      </div>
+      <div class="modal-body">
+      <br />
+      <div class="well">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#login" data-toggle="tab">Login</a></li>
+				<li><a href="#create" data-toggle="tab">Create Account</a></li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane active in" id="login">
+					<form class="form-horizontal" role="form">						
+					  <div class="form-group">
+					    <label for="inputEmail3" class="col-sm-2 control-label">Usuario</label>
+					    <div class="col-sm-10">
+					    	<div class="input-group">
+							  <span class="input-group-addon">@</span>
+					      		<input type="text" class="form-control" id="inputEmail3" placeholder="usuario">
+							</div>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+					    <div class="col-sm-10">
+					      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <div class="col-sm-offset-2 col-sm-10">
+					      <div class="checkbox">
+					        <label>
+					          <input type="checkbox"> Non pechar a sesi&oacute;n
+					        </label>
+					      </div>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <div class="col-sm-offset-2 col-sm-10">
+					      <button type="submit" class="btn btn-success">Login</button>
+					    </div>
+					  </div>
+					</form>            
+				</div>
+				<div class="tab-pane fade" id="create">
+					
+					
+					<form class="form-horizontal" role="form" id="tab">
+  <div class="form-group">
+    <label for="inputUsuarioRexistro" class="col-sm-2 control-label">Usuario</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputUsuarioRexistro" placeholder="usuario">
+    </div>
+  </div>
+    <div class="form-group">
+    <label for="inputNomeRexistro" class="col-sm-2 control-label">Nome</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputNomeRexistro" placeholder="nome">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPasswordRexistro" class="col-sm-2 control-label">Password</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="inputPasswordRexistro" placeholder="Password">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">Crear conta</button>
+    </div>
+  </div>
+</form>
+				</div>
+			</div>
+      
+      
+      </div>
+      <div class="modal-footer">&nbsp;</div>
+    </div>
+  </div>
+</div>
+
+
+
     </div> <!-- /container -->
 
 
@@ -90,6 +174,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
   </body>
 </html>
