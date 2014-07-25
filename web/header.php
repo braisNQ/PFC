@@ -7,6 +7,18 @@
 	error_reporting(-1);
 ?>
 
+<?php
+/*
+ * iniciando sesión 
+ */ 
+ session_start();
+ 
+ //incluindo todas as clases da aplicación
+ include_once("clase_BD.php");
+ include_once("clase_usuario.php");
+
+ ?>
+
 <!DOCTYPE html>
 <html lang="ga">
   <head>

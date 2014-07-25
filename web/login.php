@@ -1,15 +1,27 @@
-			<li><a href="mensaxes.php"><?php echo md5("casa");?>Mensaxes  <span class="badge">42</span></a></li>
-			<li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ola X!<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#"><a href="logout.php">O menu perfil</a></li>
-                <li><a href="#">O meu equipo</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header"><a href="logout.php"><span class="glyphicon glyphicon-off btn-xs"></span> Pechar sesi&oacute;n</a></li>
-              </ul>
-            </li>
-
-			<li><a href="#" data-toggle="modal" data-target="#loginModal">Login / Rexistro</a></li>
+<?php
+	if (isset($_SESSION['login']))
+	{
+		?>
+		<li><a href="mensaxes.php">Mensaxes  <span class="badge">42</span></a></li>
+		<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo "Ola ". $_SESSION['login'] ."!"?><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#"><a href="logout.php">O menu perfil</a></li>
+            <li><a href="#">O meu equipo</a></li>
+            <li class="divider"></li>
+            <li class="dropdown-header"><a href="logout.php"><span class="glyphicon glyphicon-off btn-xs"></span> Pechar sesi&oacute;n</a></li>
+          </ul>
+        </li>
+	    <?php
+	}
+	else
+	{
+		?>
+		<li><a href="#" data-toggle="modal" data-target="#loginModal">Login / Rexistro</a></li>
+		<?php
+	}
+?>
+			
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -33,13 +45,13 @@
 			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane active in" id="login">
 					<br />
-					<form class="form-horizontal" role="form" id="formLogin">						
+					<form class="form-horizontal" role="form" id="formLogin" action="accesosistema.php" method="post">						
 					  <div class="form-group">
 					    <label for="inputLogin" class="col-sm-2 control-label">Login</label>
 					    <div class="col-sm-10">
 					    	<div class="input-group">
 							  <span class="input-group-addon glyphicon glyphicon-user"></span>
-					      		<input type="text" class="form-control" id="inputLogin" placeholder="Login" required>
+					      		<input type="text" class="form-control" id="inputLogin" name="inputLogin" placeholder="Login" required>
 							</div>
 					    </div>
 					  </div>
@@ -48,7 +60,7 @@
 					    <div class="col-sm-10">
 					    	<div class="input-group">
 							  <span class="input-group-addon glyphicon glyphicon-lock"></span>
-					      		<input type="password" class="form-control" id="inputContrasinal" placeholder="Contrasinal" required>
+					      		<input type="password" class="form-control" id="inputContrasinal" name="inputContrasinal" placeholder="Contrasinal" required>
 							</div>
 					    </div>
 					  </div>
@@ -61,13 +73,13 @@
 				</div>
 				<div class="tab-pane fade" id="create">
 					<br />					
-					<form class="form-horizontal" role="form" id="tab">
+					<form class="form-horizontal" role="form" id="formRexistro" action="accesosistema.php" method="post">
 						<div class="form-group">
 					    <label for="inputLoginRexistro" class="col-sm-2 control-label">Login</label>
 					    <div class="col-sm-10">
 					    	<div class="input-group">
 							  <span class="input-group-addon glyphicon glyphicon-user"></span>
-					      		<input type="text" class="form-control" id="inputLoginRexistro" placeholder="Login" required>
+					      		<input type="text" class="form-control" id="inputLoginRexistro" name="inputLoginRexistro" placeholder="Login" required>
 							</div>
 					    </div>
 					  </div>
@@ -76,7 +88,7 @@
 					    <div class="col-sm-10">
 					    	<div class="input-group">
 							  <span class="input-group-addon glyphicon glyphicon-lock"></span>
-					      		<input type="password" class="form-control" id="inputContrasinalRexistro" placeholder="Contrasinal" required>
+					      		<input type="password" class="form-control" id="inputContrasinalRexistro" name="inputContrasinalRexistro" placeholder="Contrasinal" required>
 							</div>
 					    </div>
 					  </div>
@@ -85,13 +97,13 @@
 					    <div class="col-sm-10">
 					    	<div class="input-group">
 							  <span class="input-group-addon glyphicon glyphicon-comment"></span>
-					      		<input type="text" class="form-control" id="inputNomeRexistro" placeholder="Nome a amosar" required>
+					      		<input type="text" class="form-control" id="inputNomeRexistro" name="inputNomeRexistro" placeholder="Nome a amosar" required>
 							</div>
 					    </div>
 					  </div>
 					  <div class="form-group">
 					    <div class="col-sm-offset-2 col-sm-10">
-					      <button type="submit" class="btn btn-primary">Crear conta</button>
+					      <button type="submit" class="btn btn-primary" name="accion" value="rexistro" onClick="md5rexistro()">Crear conta</button>
 					    </div>
 					  </div>
 					</form>

@@ -35,17 +35,38 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>Equipos</h1>
-        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-        <p>To see the difference between static and fixed top navbars, just scroll.</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
-        </p>
-      </div>
+       
+<?php
 
+if (!isset($_GET['pax']))
+	$_GET['pax'] = 1;
+$pax = $_GET['pax'];
 
+echo "		<ul class='pagination'>";
+if($pax == 1)
+	echo "	  <li class='disabled'><a href='#'>&laquo;</a></li>";
+else
+	echo "	  <li><a href='?pax=".(int)$pax -1 ."'>&laquo;</a></li>";
+	
+	for($i=1; $i<=5; $i++)
+	{
+		if($i == $pax)
+			echo "<li class='active'><a href='#'>$i</a></li>";
+		else
+			echo "<li><a href='?pax=$i'>$i</a></li>";
+		
+	}
+echo "		  <li><a href='#'>&raquo;</a></li>";
+echo "		</ul>";
 
-  
+?>
+       
+       
+       
+       
+       
+       
+      </div>  
     </div> <!-- /container -->
     
 <?php include("footer.php"); ?>

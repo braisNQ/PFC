@@ -39,7 +39,6 @@
         
 <?php
 
-include('clase_usuario.php');
 
 echo "asd";
 $p = new prueba;
