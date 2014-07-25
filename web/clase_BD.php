@@ -49,6 +49,96 @@ class BD
 	 }
 	 
 	 /*
+	  * función buscaLogin($login)
+	  * busca un login concreto na BD
+	  */
+	 function buscaLogin($login)
+	 {
+	 	$l = mysqli_real_escape_string($this->conexion, $login);
+	 	$sql = "select * from Usuario where login = '".$l."'";
+		return mysqli_query($this->conexion, $sql);	 	
+	 }
+	 
+	 /*
+	  * función usuarioPorID($id)
+	  * devolve o usuario solicitado
+	  */
+	 function usuarioPorID($id)
+	 {
+	 	$i = mysqli_real_escape_string($this->conexion, $id);
+	 	$sql = "select * from Usuario where ID = '".$i."'";
+		return mysqli_query($this->conexion, $sql);	
+	 }
+	 
+	 /*
+	  * función numeroUsuarios()
+	  * devolve o número de usuarios creados na aplicación sen contar a "administrador"
+	  */
+	  function numeroUsuarios()
+	  {
+	  	$sql = "select * from Usuario where ID > 1";
+		$res = mysqli_query($this->conexion, $sql);
+		return $res->num_rows;		
+	  }
+	  
+	  /*
+	   * función listarUsuarios
+	   * devolve a lista de usuarios que cumplen un filtro específico
+	   */
+	  function listarUsuarios($items, $login, $nome, $nomeequipo, $enequipo, $tipo, $orderby, $order, $inicio)
+	  {
+	  	$l = mysqli_real_escape_string($this->conexion, $login);
+		$n = mysqli_real_escape_string($this->conexion, $nome);
+		$ne = mysqli_real_escape_string($this->conexion, $nomeequipo);
+		
+		$sql='';
+		$sql = $sql."select ID, login, nome, tipo, ID_equipo, ";
+		$sql = $sql."(select Equipo.nome from Equipo where Equipo.ID = Usuario.ID_equipo and Equipo.nome like '%".$ne."%') as nomeequipo ";
+		$sql = $sql." from Usuario where ";
+		$sql = $sql."ID > 1 ";
+		$sql = $sql."and nome like '%".$n."%' ";
+		$sql = $sql."and login like '%".$l."%' ";
+		
+		if($enequipo == "on")
+			$sql = $sql."and ID_equipo is not NULL ";
+		
+		if($tipo > 0)
+			$sql = $sql."and tipo =".$tipo." ";
+					
+		$sql = $sql."order by ".$orderby." ".$order." ";		
+		$sql = $sql."limit " . $inicio . "," . $items." " ;
+		
+		return mysqli_query($this->conexion, $sql);	  	
+	  }
+	  
+	  /*
+	   * función listarUsuariosCont
+	   * devolve o número de usuarios que cumplen un filtro específico
+	   */
+	  function listarUsuariosCont($login, $nome, $nomeequipo, $enequipo, $tipo)
+	  {
+	  	$l = mysqli_real_escape_string($this->conexion, $login);
+		$n = mysqli_real_escape_string($this->conexion, $nome);
+		$ne = mysqli_real_escape_string($this->conexion, $nomeequipo);
+		
+		$sql='';
+		$sql = $sql."select ID, login, nome, tipo, ID_equipo, ";
+		$sql = $sql."(select Equipo.nome from Equipo where Equipo.ID = Usuario.ID_equipo and Equipo.nome like '%".$ne."%') as nomeequipo ";
+		$sql = $sql." from Usuario where ";
+		$sql = $sql."ID > 1 ";
+		$sql = $sql."and nome like '%".$n."%' ";
+		$sql = $sql."and login like '%".$l."%' ";
+		
+		if($enequipo == "on")
+			$sql = $sql."and ID_equipo is not NULL ";
+		
+		if($tipo > 0)
+			$sql = $sql."and tipo =".$tipo." ";
+		
+		return mysqli_query($this->conexion, $sql)->num_rows;	  	
+	  }
+	 
+	 /*
 	 function updateAdmin()
 	 {
 	 	

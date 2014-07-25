@@ -8,16 +8,20 @@
 ?>
 
 <?php
-/*
- * iniciando sesión 
- */ 
- session_start();
- 
- //incluindo todas as clases da aplicación
- include_once("clase_BD.php");
- include_once("clase_usuario.php");
-
- ?>
+	/*
+	 * iniciando sesión 
+	 */ 
+	 session_start();
+	 
+	 //incluindo todas as clases da aplicación
+	 include_once("clase_BD.php");
+	 include_once("clase_usuario.php");
+	 
+	if (isset($_SESSION['ID']))
+	{
+		$usuarioActual = new usuario($_SESSION['ID']);
+	}
+?>
 
 <!DOCTYPE html>
 <html lang="ga">

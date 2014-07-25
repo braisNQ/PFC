@@ -1,10 +1,10 @@
 <?php
-	if (isset($_SESSION['login']))
+	if (isset($_SESSION['ID']))
 	{
 		?>
 		<li><a href="mensaxes.php">Mensaxes  <span class="badge">42</span></a></li>
 		<li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo "Ola ". $_SESSION['login'] ."!"?><span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo "Ola ". $usuarioActual->getNome()."!"?><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#"><a href="logout.php">O menu perfil</a></li>
             <li><a href="#">O meu equipo</a></li>
@@ -51,7 +51,7 @@
 					    <div class="col-sm-10">
 					    	<div class="input-group">
 							  <span class="input-group-addon glyphicon glyphicon-user"></span>
-					      		<input type="text" class="form-control" id="inputLogin" name="inputLogin" placeholder="Login" required>
+					      		<input type="text" class="form-control" id="inputLogin" name="inputLogin" maxlength="50" placeholder="Login" required>
 							</div>
 					    </div>
 					  </div>
@@ -60,7 +60,7 @@
 					    <div class="col-sm-10">
 					    	<div class="input-group">
 							  <span class="input-group-addon glyphicon glyphicon-lock"></span>
-					      		<input type="password" class="form-control" id="inputContrasinal" name="inputContrasinal" placeholder="Contrasinal" required>
+					      		<input type="password" class="form-control" id="inputContrasinal" name="inputContrasinal" maxlength="50" placeholder="Contrasinal" required>
 							</div>
 					    </div>
 					  </div>
@@ -79,7 +79,7 @@
 					    <div class="col-sm-10">
 					    	<div class="input-group">
 							  <span class="input-group-addon glyphicon glyphicon-user"></span>
-					      		<input type="text" class="form-control" id="inputLoginRexistro" name="inputLoginRexistro" placeholder="Login" required>
+					      		<input type="text" class="form-control" id="inputLoginRexistro" name="inputLoginRexistro" maxlength="50" placeholder="Login" required>
 							</div>
 					    </div>
 					  </div>
@@ -88,7 +88,7 @@
 					    <div class="col-sm-10">
 					    	<div class="input-group">
 							  <span class="input-group-addon glyphicon glyphicon-lock"></span>
-					      		<input type="password" class="form-control" id="inputContrasinalRexistro" name="inputContrasinalRexistro" placeholder="Contrasinal" required>
+					      		<input type="password" class="form-control" id="inputContrasinalRexistro" name="inputContrasinalRexistro" maxlength="50" placeholder="Contrasinal" required>
 							</div>
 					    </div>
 					  </div>
@@ -97,7 +97,7 @@
 					    <div class="col-sm-10">
 					    	<div class="input-group">
 							  <span class="input-group-addon glyphicon glyphicon-comment"></span>
-					      		<input type="text" class="form-control" id="inputNomeRexistro" name="inputNomeRexistro" placeholder="Nome a amosar" required>
+					      		<input type="text" class="form-control" id="inputNomeRexistro" name="inputNomeRexistro" maxlength="50" placeholder="Nome a amosar" required>
 							</div>
 					    </div>
 					  </div>
