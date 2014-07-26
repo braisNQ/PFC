@@ -14,6 +14,7 @@
 	 session_start();
 	 
 	 //incluindo todas as clases da aplicación
+	 include_once("funcions.php");
 	 include_once("clase_BD.php");
 	 include_once("clase_usuario.php");
 	 

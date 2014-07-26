@@ -2,12 +2,12 @@
 	if (isset($_SESSION['ID']))
 	{
 		?>
-		<li><a href="mensaxes.php">Mensaxes  <span class="badge">42</span></a></li>
+		<li><a href="mensaxes.php">Mensaxes <span class="badge"><?php echo $usuarioActual->mensaxesNovas();?></span></a></li>
 		<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo "Ola ". $usuarioActual->getNome()."!"?><span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#"><a href="logout.php">O menu perfil</a></li>
-            <li><a href="#">O meu equipo</a></li>
+            <li><a href="usuario.php?id=<?php echo $_SESSION['ID']; ?>">O meu perfil</a></li>
+            <li><a href="equipo.php">O meu equipo</a></li>
             <li class="divider"></li>
             <li class="dropdown-header"><a href="logout.php"><span class="glyphicon glyphicon-off btn-xs"></span> Pechar sesi&oacute;n</a></li>
           </ul>
@@ -37,7 +37,7 @@
       </div>
       <div class="modal-body">
       <br />
-      <div class="well">
+      	<div class="well">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#login" data-toggle="tab">Login</a></li>
 				<li><a href="#create" data-toggle="tab">Crear nova conta</a></li>
@@ -83,15 +83,6 @@
 							</div>
 					    </div>
 					  </div>
-					   <div class="form-group">
-					    <label for="inputContrasinalRexistro" class="col-sm-2 control-label">Contrasinal</label>
-					    <div class="col-sm-10">
-					    	<div class="input-group">
-							  <span class="input-group-addon glyphicon glyphicon-lock"></span>
-					      		<input type="password" class="form-control" id="inputContrasinalRexistro" name="inputContrasinalRexistro" maxlength="50" placeholder="Contrasinal" required>
-							</div>
-					    </div>
-					  </div>
 					  <div class="form-group">
 					    <label for="inputNomeRexistro" class="col-sm-2 control-label">Nome</label>
 					    <div class="col-sm-10">
@@ -101,6 +92,15 @@
 							</div>
 					    </div>
 					  </div>
+					   <div class="form-group">
+					    <label for="inputContrasinalRexistro" class="col-sm-2 control-label">Contrasinal</label>
+					    <div class="col-sm-10">
+					    	<div class="input-group">
+							  <span class="input-group-addon glyphicon glyphicon-lock"></span>
+					      		<input type="password" class="form-control" id="inputContrasinalRexistro" name="inputContrasinalRexistro" maxlength="50" placeholder="Contrasinal" required>
+							</div>
+					    </div>
+					  </div>					  
 					  <div class="form-group">
 					    <div class="col-sm-offset-2 col-sm-10">
 					      <button type="submit" class="btn btn-primary" name="accion" value="rexistro" onClick="md5rexistro()">Crear conta</button>
@@ -109,9 +109,7 @@
 					</form>
 				</div>
 			</div>
-      
-      
-      </div>
+      	</div>
       <div class="modal-footer">&nbsp;</div>
     </div>
   </div>

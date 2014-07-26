@@ -2,6 +2,16 @@
 
 class BD
 {
+	 /*
+	 function updateAdmin()
+	 {
+	 	
+		$sql = "update Usuario set nome='administrador' where ID=1";
+		echo $sql;
+		mysqli_query($this->conexion,$sql);
+	 }
+	  * */
+	
 	var $conexion;	//almacena a conexión coa BD
 	
 	/*
@@ -43,7 +53,6 @@ class BD
 	 {
 	 	$u = mysqli_real_escape_string($this->conexion, $usuario);
 		$n = mysqli_real_escape_string($this->conexion, $nome);
-	 	$sql = "select * from Usuario where login = '".$u."' and contrasinal ='".$contrasinal."'";
 		$sql = "insert into Usuario (login, contrasinal, nome, tipo) values ('".$u."', '".$contrasinal."', '".$n."', 3)";
 		return mysqli_query($this->conexion, $sql);
 	 }
@@ -58,18 +67,7 @@ class BD
 	 	$sql = "select * from Usuario where login = '".$l."'";
 		return mysqli_query($this->conexion, $sql);	 	
 	 }
-	 
-	 /*
-	  * función usuarioPorID($id)
-	  * devolve o usuario solicitado
-	  */
-	 function usuarioPorID($id)
-	 {
-	 	$i = mysqli_real_escape_string($this->conexion, $id);
-	 	$sql = "select * from Usuario where ID = '".$i."'";
-		return mysqli_query($this->conexion, $sql);	
-	 }
-	 
+	 	 
 	 /*
 	  * función numeroUsuarios()
 	  * devolve o número de usuarios creados na aplicación sen contar a "administrador"
@@ -85,7 +83,7 @@ class BD
 	   * función listarUsuarios
 	   * devolve a lista de usuarios que cumplen un filtro específico
 	   */
-	  function listarUsuarios($items, $login, $nome, $nomeequipo, $enequipo, $tipo, $orderby, $order, $inicio)
+	  function listarUsuarios($login, $nome, $nomeequipo, $enequipo, $tipo, $orderby, $order, $inicio, $items)
 	  {
 	  	$l = mysqli_real_escape_string($this->conexion, $login);
 		$n = mysqli_real_escape_string($this->conexion, $nome);
@@ -135,19 +133,112 @@ class BD
 		if($tipo > 0)
 			$sql = $sql."and tipo =".$tipo." ";
 		
-		return mysqli_query($this->conexion, $sql)->num_rows;	  	
+		$toret = 0;
+		
+		if($u = mysqli_query($this->conexion, $sql))
+			$toret = $u->num_rows;
+		
+		return $toret;  	  	
+	  }	  
+	  
+	 /*
+	  * función numeroEquipos()
+	  * devolve o número de equipos creados na aplicación
+	  */
+	  function numeroEquipos()
+	  {
+	  	$sql = "select * from Equipo";
+		$res = mysqli_query($this->conexion, $sql);
+		return $res->num_rows;		
 	  }
+	  
+	  /*
+	   * función listarEquipos
+	   * devolve a lista de usuarios que cumplen un filtro específico
+	   */
+	  function listarEquipos($nome, $membros, $orderby, $order, $inicio, $items)
+	  {
+		$n = mysqli_real_escape_string($this->conexion, $nome);
+		$m = mysqli_real_escape_string($this->conexion, $membros);
+		
+		$sql='';
+		$sql = $sql."select ID, nome, ID_propietario, ";
+		$sql = $sql."(select count(*) from Usuario where Usuario.ID_equipo = Equipo.ID) as membros ";
+		$sql = $sql." from Equipo where ";
+		$sql = $sql."nome like '%".$n."%' ";
+		//$sql = $sql."and membros >= '%".$m."%' ";
+							
+		//$sql = $sql."order by ".$orderby." ".$order." ";		
+		//$sql = $sql."limit " . $inicio . "," . $items." " ;
+		
+		return mysqli_query($this->conexion, $sql);	  	
+	  }
+	  
+	  /*
+	   * función listarEquiposCont
+	   * devolve o número de equipos que cumplen un filtro específico
+	   */
+	  function listarEquiposCont($nome, $membros)
+	  {
+		$n = mysqli_real_escape_string($this->conexion, $nome);
+		$m = mysqli_real_escape_string($this->conexion, $membros);
+		
+		$sql='';
+		$sql = $sql."select ID, nome, ID_propietario, ";
+		$sql = $sql."(select count(*) from Usuario where Usuario.ID_equipo = Equipo.ID) as membros ";
+		$sql = $sql." from Equipo where ";
+		$sql = $sql."nome like '%".$n."%' ";
+		//$sql = $sql."and membros >= '%".$m."%' ";
+				
+		$toret = 0;
+		
+		if($u = mysqli_query($this->conexion, $sql))
+			$toret = $u->num_rows;
+		
+		return $toret;  	
+	  }	  
 	 
 	 /*
-	 function updateAdmin()
-	 {
-	 	
-		$sql = "update Usuario set nome='administrador' where ID=1";
-		echo $sql;
-		mysqli_query($this->conexion,$sql);
-	 }
-	  * */
-	 
+	  * función numeroTorneos()
+	  * devolve o número de torneos creados na aplicación
+	  */
+	  function numeroTorneos()
+	  {
+	  	$sql = "select * from Torneos";
+		$res = mysqli_query($this->conexion, $sql);
+		return $res->num_rows;		
+	  }
+	  
+	  /*
+	   * función listarTorneos
+	   * devolve a lista de torneos que cumplen un filtro específico
+	   */
+	  function listarTorneos($nome, $equipos, $estado, $orderby, $order, $inicio, $items)
+	  {
+		$n = mysqli_real_escape_string($this->conexion, $nome);
+		$ne = mysqli_real_escape_string($this->conexion, $equipos);
+		$e = mysqli_real_escape_string($this->conexion, $estado);
+		
+		$sql='';
+		$sql = $sql."select ID, nome, iniciado, ";
+		$sql = $sql." (select count(*) from EquipoTorneo where EquipoTorneo.ID_torneo = Torneo.ID) as equipos ";
+		$sql = $sql." (select count(*) from Partido where Partido.ID_torneo = Torneo.ID and Partido.resultado_confirmado = 0) as inacabados ";
+		$sql = $sql." from Usuario where ";
+		$sql = $sql."ID > 1 ";
+		$sql = $sql."and nome like '%".$n."%' ";
+		$sql = $sql."and login like '%".$l."%' ";
+		
+		if($enequipo == "on")
+			$sql = $sql."and ID_equipo is not NULL ";
+		
+		if($tipo > 0)
+			$sql = $sql."and tipo =".$tipo." ";
+					
+		$sql = $sql."order by ".$orderby." ".$order." ";		
+		$sql = $sql."limit " . $inicio . "," . $items." " ;
+		
+		return mysqli_query($this->conexion, $sql);	  	
+	  }
 }
 
 

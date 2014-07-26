@@ -92,7 +92,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading text-right">
 			<a data-toggle="collapse" data-parent="#accordion" href="#collapseForm">
-  				Filtro <span class="glyphicon glyphicon-chevron-down"></span>
+  				Filtro <span class="caret"></span>
 			</a>
 		</div>
 		<div id="collapseForm" class="panel-collapse collapse">
@@ -109,12 +109,17 @@
 							<input type="text" class="form-control input-sm" id="nome" name="nome" maxlength="50" value="<?php echo $nome;?>">
 					    </div>
 					    <label for="nomeequipo" class="col-sm-1 control-label input-sm">Equipo</label>
-					    <div class="col-sm-3">
-							<input type="text" class="form-control input-sm" id="nomeequipo" name="nomeequipo" maxlength="50" value="<?php echo $nomeequipo;?>">
+					    <div class="col-sm-3">					    	
+							<div class="input-group">
+								<input type="text" class="form-control input-sm" id="nomeequipo" name="nomeequipo" maxlength="50" value="<?php echo $nomeequipo;?>">
+								<label class="control-label input-sm">
+						    		<input type="checkbox" id="enquipo" name="enequipo" <?php if($enequipo) echo "checked";?>> S&oacute; usuari@s con equipo
+						  		</label>
+						  	</div>
 					    </div>
 					</div>
 					<div class="form-group">
-						<label for="tipo" class="col-sm-2 control-label input-sm">Tipo de usuari@s</label>
+						<label for="tipo" class="col-sm-1 control-label input-sm">Tipo</label>
 						<div class="col-sm-2">
 							<select class="form-control input-sm" name="tipo" id="tipo">
 							  <option value="0" <?php if($tipo == 0) echo "selected";?>>Tod@s</option>
@@ -123,39 +128,33 @@
 							  <option value="3" <?php if($tipo == 3) echo "selected";?>>Usuaria/o</option>
 							</select>
 						</div>
-						<label for="orderby" class="col-sm-2 control-label input-sm">Order by</label>
+						<label for="orderby" class="col-sm-1 control-label input-sm">Orde</label>
 						<div class="col-sm-2">
-							<select class="form-control input-sm" name="orderby" id="orderby">
-							  <option value="login" <?php if($orderby == "login") echo "selected";?>>Login</option>
-							  <option value="nome" <?php if($orderby == "nome") echo "selected";?>>Nome</option>
-							  <option value="nomeequipo" <?php if($orderby == "nomeequipo") echo "selected";?>>Equipo</option>
-							</select>
+							<div class="input-group">
+								<select class="form-control input-sm" name="orderby" id="orderby">
+								  <option value="login" <?php if($orderby == "login") echo "selected";?>>Login</option>
+								  <option value="nome" <?php if($orderby == "nome") echo "selected";?>>Nome</option>
+								  <option value="nomeequipo" <?php if($orderby == "nomeequipo") echo "selected";?>>Equipo</option>
+								</select>
+								&nbsp;&nbsp;
+								<label class="radio-inline control-label input-sm">
+							  		<input type="radio" name="order" id="orderAsc" value="asc" <?php if($order == "asc") echo "checked";?>> A-Z</span> <span class="caret"></span>
+								</label>
+								<label class="radio-inline control-label input-sm">
+								  <input type="radio" name="order" id="orderDesc" value="desc" <?php if($order == "desc") echo "checked";?>> Z-A</span> <span class="caret caret-reversed"></span>
+								</label>
+							</div>
 						</div>
-						
-						<label for="items" class="col-sm-3 control-label input-sm">Resultados por p&aacute;xina</label>
+						<label for="items" class="col-sm-2 control-label input-sm">Resultados por p&aacute;xina</label>
 					    <div class="col-sm-1">
 							<input type="number" class="form-control input-sm" id="items" name="items" min="1" max="20" step="1" value="<?php echo $items;?>">
-					    </div>
-					</div>
-					<div class="form-group">
-						<div class="checkbox col-sm-offset-1 col-sm-3">
-							<label class="control-label input-sm">
-						    	<input type="checkbox" id="enquipo" name="enequipo" <?php if($enequipo) echo "checked";?>>
-						    	S&oacute; usuari@s con equipo
-						  	</label>
-						</div>		
-						<label class=" col-sm-offset-1 col-sm-1 control-label input-sm">Orde</label>
-						<div class="col-sm-2">						
-							<label class="radio-inline input-sm">
-							  <input type="radio" name="order" id="orderAsc" value="asc" <?php if($order == "asc") echo "checked";?>> Asc
-							</label>
-							<label class="radio-inline input-sm">
-							  <input type="radio" name="order" id="orderDesc" value="desc" <?php if($order == "desc") echo "checked";?>> Desc
-							</label>
-						</div>				
-				    	<div class="col-sm-4">
-				     		<button type="submit" class="btn btn-info btn-sm" name="accion" value="filtrar"><span class='glyphicon glyphicon-search'> Filtrar</button> 
-				     		<a href="usuarios.php" class="btn btn-default btn-sm"><span class='glyphicon glyphicon-trash'> Limpar</a>
+					    </div>					    
+				  	</div>
+					<div class="form-group">						
+					    <div class="col-sm-10"></div>
+				    	<div class="col-sm-2">
+				     		<button type="submit" class="btn btn-info btn-xs" name="accion" value="filtrar"><span class='glyphicon glyphicon-search'></span> Filtrar</button> 
+				     		<a href="usuarios.php" class="btn btn-default btn-xs"><span class='glyphicon glyphicon-trash'></span> Limpar</a>
 				    	</div>
 				  	</div>
 				</form>
@@ -168,7 +167,7 @@
 	$bd = new bd();
 	
 	$nt = $bd->numeroUsuarios();
-	$nf = $bd->listarUsuariosCont($login, $nome, $nomeequipo, $enequipo, $tipo)."<br>";
+	$nf = $bd->listarUsuariosCont($login, $nome, $nomeequipo, $enequipo, $tipo);
 
 	//calculos para paxinación
 	$inicio = ($p - 1) * $items;
@@ -180,9 +179,12 @@
 	if($mostrando_fin > $nf)
 		$mostrando_fin = $mostrando_inicio + ($nf - $inicio -1);
 	
-	$lista = $bd->listarUsuarios($items, $login, $nome, $nomeequipo, $enequipo, $tipo, $orderby, $order, $inicio);
+	if($mostrando_inicio > $mostrando_fin)
+		$mostrando_inicio = $mostrando_fin;
+	
+	$lista = $bd->listarUsuarios($login, $nome, $nomeequipo, $enequipo, $tipo, $orderby, $order, $inicio, $items);
 		
-	echo "<span>Listando ".$mostrando_inicio." - ".$mostrando_fin." de ".intval($nf)." usuarios filtrados.<span>";
+	echo "<span>Listando ".$mostrando_inicio." - ".$mostrando_fin." de ".intval($nf)." usuarios filtrados.</span>";
 	echo "<br />";
 	echo "<span>Usuarios totais: ".$nt."</span>";
 	
@@ -217,7 +219,7 @@
 						if($row['ID'] != $_SESSION['ID'])
 							echo "<a class='btn btn-default btn-xs' href='mensaxes.php?id=".$row['ID']."'><span class='glyphicon glyphicon-envelope' data-toggle='tooltip' data-placement='top' title='Enviar mensaxe'></span></a> ";
 						if(($row['ID'] == $_SESSION['ID']) || $usuarioActual->admin())
-							echo "<a class='btn btn-default btn-xs' href='usuario.php?id=".$row['ID']."'><span class='glyphicon glyphicon-edit' data-toggle='tooltip' data-placement='top' title='Editar perfil'></span></a> ";
+							echo "<a class='btn btn-info btn-xs' href='usuario.php?id=".$row['ID']."'><span class='glyphicon glyphicon-edit' data-toggle='tooltip' data-placement='top' title='Editar perfil'></span></a> ";
 						if($usuarioActual->admin())
 							echo "<a class='btn btn-danger btn-xs' href='eliminarusuario.php?id=".$row['ID']."'><span class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' data-placement='top' title='Eliminar usuario'></span></a> ";
 					}
@@ -249,7 +251,7 @@
 		else
 			echo "<li><a href='#' onClick='cambiaPaxListado(".$i.")'>".$i."</a></li>";
 	}
-	if($p == $total_paxinas)
+	if($p >= $total_paxinas)
 	{
 		echo "		  <li class='disabled'><a href='#'>&gt;</a></li>";
 		echo "		  <li class='disabled'><a href='#'>&raquo;</a></li>";		

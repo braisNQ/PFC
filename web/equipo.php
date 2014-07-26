@@ -1,5 +1,12 @@
 <?php include("header.php"); ?>
 
+<?php
+	if(isset($_GET['id']))
+		$id = $_GET['id'];
+	
+	$user = new usuario($id);
+?>
+
     <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
@@ -16,7 +23,7 @@
           <ul class="nav navbar-nav">
             <li><a href="index.php">Inicio</a></li>
             <li><a href="usuarios.php">Usuarios</a></li>
-            <li><a href="equipos.php">Equipos</a></li>
+            <li class="active"><a href="equipos.php">Equipos</a></li>
             <li><a href="torneos.php">Torneos</a></li>            
           </ul>
           
@@ -31,21 +38,23 @@
     </div>
     -->
 
-    <div class="container">
+	<div class="container">
+		<div class="jumbotron">
+<?php
+	if(isset($_SESSION['ID']) && !$usuarioActual->getIDequipo())
+	{
+		aviso("info", "Parece que non pertences a ning&uacute;n equipo....", "equipo.php?accion=crear", "Crear equipo");
+	}
+?>
+        	
+		</div>
+	</div>
 
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1>Mensaxes</h1>
-        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-        <p>To see the difference between static and fixed top navbars, just scroll.</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
-        </p>
-      </div>
+	
+	
+	
+	
 
 
 
-  
-    </div> <!-- /container -->
-    
 <?php include("footer.php"); ?>
