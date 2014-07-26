@@ -41,10 +41,13 @@
 	<div class="container">
 		<div class="jumbotron">
 <?php
+	//se está logueado e non ten equipo
 	if(isset($_SESSION['ID']) && !$usuarioActual->getIDequipo())
 	{
-		aviso("info", "Parece que non pertences a ning&uacute;n equipo....", "equipo.php?accion=crear", "Crear equipo");
+		aviso("info", "Parece que non pertences a ning&uacute;n equipo....", "crearequipo.php", "Crear equipo");
 	}
+	
+	
 ?>
         	
 		</div>

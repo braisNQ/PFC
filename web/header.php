@@ -17,6 +17,8 @@
 	 include_once("funcions.php");
 	 include_once("clase_BD.php");
 	 include_once("clase_usuario.php");
+	 include_once("clase_equipo.php");
+	 include_once("clase_partido.php");
 	 
 	if (isset($_SESSION['ID']))
 	{

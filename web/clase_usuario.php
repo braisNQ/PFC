@@ -236,6 +236,49 @@ class usuario
 		$sql = "delete from Usuario where ID='".$this->id."'";		
 		return mysqli_query($this->bd->conexion, $sql);
 	}
+	
+	/*
+	 * functión entrarEquipoCreado()
+	 * actualiza o usuario para indicarlle a ID do equipo que acaba de crear 
+	*/
+	function entrarEquipoCreado()
+	{
+		$ide;
+		$sql = "select ID from Equipo where ID_propietario ='".$this->id."'";
+		$u = mysqli_query($this->bd->conexion, $sql);
+		if($u->num_rows > 0)
+		{
+			while($row = $u->fetch_assoc())
+			{
+				$ide = $row['ID'];
+				$this->ID_equipo = $ide;
+			}
+		}
+		
+		$sql = "update Usuario set ID_equipo = '".$ide."' where ID = '".$this->id."'";
+		return mysqli_query($this->bd->conexion, $sql);	
+	}
+	
+	/*
+	 * función entrarEquipo($i)
+	 * actualiza o usuario para indicarlle a nova ID de equipo
+	 */
+	function entrarEquipo($i)
+	{
+		$this->ID_equipo = $i;
+		$sql = "update Usuario set ID_equipo = '".$i."' where ID = '".$this->id."'";
+		return mysqli_query($this->bd->conexion, $sql);
+	}
+	
+	/*
+	 * función sairEquipo()
+	 * actualiza o usuario para indicarlle a nova ID de equipo
+	 */
+	function sairEquipo()
+	{
+		$sql = "update Usuario set ID_equipo = NULL where ID = '".$this->id."'";
+		return mysqli_query($this->bd->conexion, $sql);		
+	}
 }
 
 ?>

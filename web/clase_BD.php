@@ -156,20 +156,19 @@ class BD
 	   * función listarEquipos
 	   * devolve a lista de usuarios que cumplen un filtro específico
 	   */
-	  function listarEquipos($nome, $membros, $orderby, $order, $inicio, $items)
+	  function listarEquipos($nome, $order, $inicio, $items)
 	  {
 		$n = mysqli_real_escape_string($this->conexion, $nome);
-		$m = mysqli_real_escape_string($this->conexion, $membros);
 		
 		$sql='';
 		$sql = $sql."select ID, nome, ID_propietario, ";
-		$sql = $sql."(select count(*) from Usuario where Usuario.ID_equipo = Equipo.ID) as membros ";
+		$sql = $sql."(select count(*) from Usuario where Usuario.ID_equipo = Equipo.ID) as membros, ";
+		$sql = $sql."(select Usuario.nome from Usuario where Usuario.ID = Equipo.ID_propietario) as propietario ";
 		$sql = $sql." from Equipo where ";
 		$sql = $sql."nome like '%".$n."%' ";
-		//$sql = $sql."and membros >= '%".$m."%' ";
 							
-		//$sql = $sql."order by ".$orderby." ".$order." ";		
-		//$sql = $sql."limit " . $inicio . "," . $items." " ;
+		$sql = $sql."order by nome ".$order." ";		
+		$sql = $sql."limit " . $inicio . "," . $items." " ;
 		
 		return mysqli_query($this->conexion, $sql);	  	
 	  }
@@ -178,17 +177,16 @@ class BD
 	   * función listarEquiposCont
 	   * devolve o número de equipos que cumplen un filtro específico
 	   */
-	  function listarEquiposCont($nome, $membros)
+	  function listarEquiposCont($nome)
 	  {
 		$n = mysqli_real_escape_string($this->conexion, $nome);
-		$m = mysqli_real_escape_string($this->conexion, $membros);
 		
 		$sql='';
 		$sql = $sql."select ID, nome, ID_propietario, ";
-		$sql = $sql."(select count(*) from Usuario where Usuario.ID_equipo = Equipo.ID) as membros ";
+		$sql = $sql."(select count(*) from Usuario where Usuario.ID_equipo = Equipo.ID) as membros, ";
+		$sql = $sql."(select Usuario.nome from Usuario where Usuario.ID = Equipo.ID_propietario) as propietario ";
 		$sql = $sql." from Equipo where ";
 		$sql = $sql."nome like '%".$n."%' ";
-		//$sql = $sql."and membros >= '%".$m."%' ";
 				
 		$toret = 0;
 		
@@ -239,6 +237,31 @@ class BD
 		
 		return mysqli_query($this->conexion, $sql);	  	
 	  }
+	  
+	 /*
+	  * función crearEquipo ($usuario, $nome, $nome)
+	  * inserta na BD un novo usuario
+	  * devolve o resultado de executar a consulta
+	  */
+	 function crearEquipo($usuario, $nome, $codigo)
+	 {
+	 	$u = mysqli_real_escape_string($this->conexion, $usuario);
+		$n = mysqli_real_escape_string($this->conexion, $nome);
+		$sql = "insert into Equipo (nome, ID_propietario, codigo_ingreso) values ('".$n."', '".$u."', '".$codigo."')";
+		return mysqli_query($this->conexion, $sql);
+	 }
+	 
+	 /*
+	  * función existeEquipo($nome)
+	  * devolve true se existe o nome de equipo na BD
+	  */
+	 function existeEquipo($nome)
+	 {	
+		$n = mysqli_real_escape_string($this->conexion, $nome);
+		$sql = "select * from Equipo where nome ='".$n."'";
+		
+		return (mysqli_query($this->conexion, $sql)->num_rows > 0);
+	 }
 }
 
 
