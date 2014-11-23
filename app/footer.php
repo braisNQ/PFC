@@ -1,11 +1,11 @@
     <div class="footer">
       <div class="container">
         <p class="text-muted" align="center">
-        	Plataforma de xesti&oacute;n de torneos online
-        	<br />
-        	Proxecto Fin de Carreira - Brais Carri&oacute;n Ansias
-        	<br />
-        	Xullo 2014
+            Plataforma de xesti&oacute;n de torneos online
+            <br />
+            Proxecto Fin de Carreira - Brais Carri&oacute;n Ansias
+            <br />
+            Decembro 2014
         </p>
       </div>
     </div>

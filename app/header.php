@@ -1,29 +1,30 @@
-<?php
+﻿<?php
 /*
  * Activar debug de php
  */
-	ini_set('display_errors',1);
-	ini_set('display_startup_errors',1);
-	error_reporting(-1);
+    ini_set('display_errors',1);
+    ini_set('display_startup_errors',1);
+    error_reporting(-1);
 ?>
 
 <?php
-	/*
-	 * iniciando sesión 
-	 */ 
-	 session_start();
-	 
-	 //incluindo todas as clases da aplicación
-	 include_once("funcions.php");
-	 include_once("clase_BD.php");
-	 include_once("clase_usuario.php");
-	 include_once("clase_equipo.php");
-	 include_once("clase_partido.php");
-	 
-	if (isset($_SESSION['ID']))
-	{
-		$usuarioActual = new usuario($_SESSION['ID']);
-	}
+    /*
+     * iniciando sesión 
+     */ 
+     session_start();
+     
+     //incluindo todas as clases da aplicación
+     include_once("funcions.php");
+     include_once("clase_BD.php");
+     include_once("clase_usuario.php");
+     include_once("clase_equipo.php");
+     include_once("clase_torneo.php");
+     include_once("clase_partido.php");
+     
+    if (isset($_SESSION['ID']))
+    {
+        $usuarioActual = new usuario($_SESSION['ID']);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -32,9 +33,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../assets/ico/favicon.ico">
+    <meta name="description" content="Plataforma xestion torneos online">
+    <meta name="author" content="Brais Carrion">
 
     <title>Plataforma de xesti&oacute;n de torneos online</title>
 

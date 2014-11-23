@@ -14,15 +14,15 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.php">Inicio</a></li>
-            <li><a href="usuarios.php">Usuarios</a></li>
-            <li><a href="equipos.php">Equipos</a></li>
-            <li><a href="torneos.php">Torneos</a></li>            
+            <li><a href="index.php">Inicio</a></li>
+            <li><a href="lista_usuarios.php">Usuarios</a></li>
+            <li><a href="lista_equipos.php">Equipos</a></li>
+            <li><a href="lista_torneos.php">Torneos</a></li>            
           </ul>
           
-          <ul class="nav navbar-nav navbar-right">          	
-          	<?php include("login.php"); ?>
-          	
+          <ul class="nav navbar-nav navbar-right">              
+              <?php include("login.php"); ?>
+              
 <!-- /ul /div /div /div dentro de login.php
           </ul>
         </div><!--/.nav-collapse -->
@@ -35,7 +35,7 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>Navbar example</h1>
+        <h1>Mensaxes</h1>
         <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
         <p>To see the difference between static and fixed top navbars, just scroll.</p>
         <p>
