@@ -37,7 +37,7 @@
 
                 
     //se non existe ID
-    if(!isset($_GET['id']))
+    if(!isset($_GET['id']) && !isset($_POST['id']))
     {
         //se está logueado e non ten equipo
         //invita a crear
@@ -65,7 +65,11 @@
     //coñece id
     else
     {
-        $id= $_GET['id'];
+        $id;
+        if(isset($_GET['id']))
+            $id= $_GET['id'];
+        if(isset($_POST['id']))
+            $id= $_POST['id'];
         $equipo = new equipo($id);
         
         $tab;
@@ -73,6 +77,30 @@
             $tab =$_GET['tab'];
         else
             $tab = "perfil";
+
+        //se se seleccionou o botón de acción
+        if(isset($_POST['accion']) )
+        {
+            //se seleccionou editar
+            if($_POST['accion'] == 'editar')
+            {
+                $n = $_POST['nome'];
+                $c = $_POST['codigo'];
+                
+                if($equipo->editar($n, $c))
+                    aviso("success", "O equipo <b>".$n."</b> foi actualizado correctamente.", "equipo.php?id=".$id, "Voltar ao perfil");
+                else
+                    aviso("danger", "Houbo alg&uacute;n problema durante a modificaci&oacute;n do equipo", "equipo.php?id=".$id."&tab=editar", "Voltar ao perfil");
+            }
+            else
+            {
+                erro("Houbo alg&uacute;n erro ao intentar recuperar o equipo solicitado.");
+            }
+        }
+        //se carga a páxina sen pulsar ningún botón
+        //presenta o formulario por defecto
+        else
+        {
             
         ?>
         
@@ -80,10 +108,17 @@
             <legend><?php echo $equipo->getNome();?></legend>
     
             <ul class="nav nav-tabs" role="tablist">
-              <li <?php if($tab=="perfil") echo 'class="active"'; ?>><a href="equipo.php?id=<?php echo $id; ?>&tab=perfil">Perfil</a></li>
-              <li <?php if($tab=="membros") echo 'class="active"'; ?>><a href="equipo.php?id=<?php echo $id; ?>&tab=membros">Membros</a></li>
-              <li <?php if($tab=="torneos") echo 'class="active"'; ?>><a href="equipo.php?id=<?php echo $id; ?>&tab=torneos">Torneos</a></li>
-              <li <?php if($tab=="editar") echo 'class="active"'; ?>><a href="equipo.php?id=<?php echo $id; ?>&tab=editar">Editar</a></li>
+                <li <?php if($tab=="perfil") echo 'class="active"'; ?>><a href="equipo.php?id=<?php echo $id; ?>&tab=perfil">Perfil</a></li>
+                <li <?php if($tab=="torneos") echo 'class="active"'; ?>><a href="equipo.php?id=<?php echo $id; ?>&tab=torneos">Torneos</a></li>
+                <?php
+                    if(($_SESSION['ID'] == $equipo->getIDPropietario()) || $usuarioActual->admin())
+                    {
+                        echo '<li ';
+                        if($tab=="editar")
+                            echo 'class="active"';
+                        echo '><a href="equipo.php?id='.$id.'&tab=editar">Editar</a></li>';
+                    }
+                ?>
             </ul>
             
             <br />
@@ -91,73 +126,115 @@
 <?php
     if($tab == "perfil")
     {
-    ?>
-        <form class="form-horizontal" role="form">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Propietario: </label>
-                <label class="col-sm-3"><?php echo $equipo->getNomePropietario();?></label>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Membros: </label>
-                <label class="col-sm-1"><?php echo $equipo->getNumMembros();?></label>
-            </div>
-        </form>
-    <?php
-    }
-    
-    if($tab == "membros")
-    {
+        echo "<span>Propietario: ".$equipo->getNomePropietario()."</span>";
+        echo "<br />";
+        echo "<span>N&uacute;mero de membros: ".$equipo->getNumMembros()."</span>";
         
-    }
+        echo "
+            <table class='table table-striped table-hover'>
+                <tr>
+                    <th>Login</th>
+                    <th>Nome</th>
+                    <th>&nbsp;</th>
+                </tr>
+        ";
+
+        $lista = $equipo->listaMembros();
+        if($lista->num_rows > 0)
+        {
+            while($row = $lista->fetch_assoc())
+            {
+                echo "<tr>";
+                    echo "<td>".$row['login']."</td>";
+                    echo "<td>".$row['nome']."</td>";           
+                    
+                    echo "<td>";
+                        if(isset($_SESSION['ID']))
+                        {
+                            if($row['id'] != $_SESSION['ID'])
+                                echo "<a class='btn btn-default btn-xs' href='mensaxes.php?id=".$row['id']."'><span class='glyphicon glyphicon-envelope' data-toggle='tooltip' data-placement='top' title='Enviar mensaxe'></span></a> ";
+                            if((($row['id'] != $_SESSION['ID']) && ($_SESSION['ID'] == $equipo->getIDPropietario())) || $usuarioActual->admin())
+                                echo "<a class='btn btn-danger btn-xs' href='equipo_remove.php?id=".$id."&usuario=".$row['id']."'><span class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' data-placement='top' title='Expulsar usuario'></span></a> ";
+                        }
+                        
+                    echo "</td>";
+                echo "</tr>";
+            }
+        }
+
+        echo "</table>";
+
+        //se o usuario actual non ten equipo
+        //unirse
+        if(isset($_SESSION['ID']) && !$usuarioActual->getIDequipo())
+        {
+            echo '
+                <div class="col-sm-2">            
+                    <a href="equipo_join.php?id='.$id.'" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Unirme ao equipo</a>
+                </div>
+            ';
+        }
+
+        //se o usuario actual é membro do equipo e non é o propietario
+        //sair
+        if(($_SESSION['ID'] != $equipo->getIDPropietario()) && ($usuarioActual->getIDequipo() == $id))
+        {
+            echo'
+                <div class="col-sm-2">
+                    <a href="equipo_leave.php?id='.$id.'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Sa&iacute;r do equipo</a>
+                </div>
+            ';
+        }
+
+        //se o usuario actual é admin ou o propietario
+        //eliminar
+        if(($_SESSION['ID'] == $equipo->getIDPropietario()) || $usuarioActual->admin())
+        {
+            echo'
+                <div class="col-sm-2">
+                    <a href="equipo_delete.php?id='.$id.'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Eliminar equipo</a>
+                </div>
+            ';
+        }
+
+    }//perfil
     
     if($tab == "torneos")
     {
         
-    }
+    }//torneos
     
     if($tab == "editar")
     {
 ?>
-        <form class="form-horizontal" role="form" id="formEditar" action="usuario.php" method="post">
+
+
+    <form class="form-horizontal" role="form" id="formEditar" action="equipo.php" method="post">
         <input type="hidden" value="<?php echo $id;?>" name="id" id="id">
-        <fieldset id="fieldEditar">
-        <legend><?php echo $user->getLogin();?></legend>             
-         <div class="form-group">
-            <label for="nome" class="col-sm-2 control-label">Nome</label>
-            <div class="col-sm-4">
-                  <input type="text" class="form-control" id="nome" name="nome" maxlength="50" value="<?php echo $user->getNome();?>" disabled required>
+        <div class="form-group">
+            <label for="nome" class="col-sm-3 control-label">Nome do equipo</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="nome" name="nome" maxlength="50" placeholder="Nome de equipo" value="<?php echo $equipo->getNome();?>" disabled required>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="contrasinal" class="col-sm-2 control-label">Contrasinal</label>
-            <div class="col-sm-4">
-                  <input type="password" class="form-control" id="contrasinal" name="contrasinal" maxlength="50" placeholder="Escribe un novo contrasinal" disabled required>
+        </div>
+        <div class="form-group">
+            <label for="codigo" class="col-sm-3 control-label">C&oacute;digo de ingreso</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="codigo" name="codigo" maxlength="10" placeholder="C&oacute;digo" value="<?php echo $equipo->getCodigoIngreso();?>" disabled required>
             </div>
-         </div>
-         <div class="form-group">
-            <label class="col-sm-2 control-label">Equipo</label>
-            <label class="col-sm-4 control-label">
-                <?php
-                    if($user->getNomeEquipo() != '')
-                        echo "<a href='equipo.php?id=".$user->getIDEquipo() ."'>".$user->getNomeEquipo() ."</a>";
-                    else
-                        echo "Sen equipo";
-                ?>
-            </label>
-         </div>
-          <div class="form-group">                      
+        </div>
+
+        <div class="form-group">                      
             <div class="col-sm-2"></div>
             <div class="col-sm-2">
-                <button type="button" class="btn btn-default" id="btnHabilitar" name="btnHabilitar" onClick="activarEdicionUsuario()"><span class='glyphicon glyphicon-edit'></span> Habilitar edici&oacute;n</button>    
-                <button type="submit" class="btn btn-success" id="accion" name="accion" value="editar"  onClick="md5editar()" disabled style="visibility:hidden">Editar perfil</button>
+                <button type="button" class="btn btn-default" id="btnHabilitar" name="btnHabilitar" onClick="activarEdicionEquipo()"><span class='glyphicon glyphicon-edit'></span> Habilitar edici&oacute;n</button>    
+                <button type="submit" class="btn btn-success" id="accion" name="accion" value="editar" disabled style="visibility:hidden">Editar perfil</button>
             </div>
-          </div>
-                 
-         </fieldset>
-    </form>
+        </div>
+    </form> 
         
 <?php    
-    }
+    }//editar
     
     
             
@@ -168,6 +245,7 @@
 
 <?php
 
+        }//else non pulsou accion
     }//else coñece id
 ?>
 

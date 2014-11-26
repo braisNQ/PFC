@@ -159,15 +159,16 @@
         {
             echo "<tr>";
                 echo "<td><a href='equipo.php?id=".$row['ID']."'>".$row['nome']."</a></td>";    
-                echo "<td><a href='equipo.php?id=".$row['ID']."&tab=membros'>".$row['membros']."</a></td>";
+                echo "<td><a href='equipo.php?id=".$row['ID']."'>".$row['membros']."</a></td>";
                 echo "<td>".$row['propietario']."</td>";    
                 echo "<td>";
                     if(isset($_SESSION['ID']))
                     {
                         if(($row['ID_propietario'] == $_SESSION['ID']) || $usuarioActual->admin())
+                        {
                             echo "<a class='btn btn-default btn-xs' href='equipo.php?id=".$row['ID']."&tab=editar'><span class='glyphicon glyphicon-edit' data-toggle='tooltip' data-placement='top' title='Editar equipo'></span></a> ";
-                        if($usuarioActual->admin())
                             echo "<a class='btn btn-danger btn-xs' href='equipo_delete.php?id=".$row['ID']."'><span class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' data-placement='top' title='Eliminar equipo'></span></a> ";
+                        }
                     }
                     
                 echo "</td>";

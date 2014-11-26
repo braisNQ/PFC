@@ -35,11 +35,11 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>Navbar example</h1>
+        <h1>Plataforma de xesti&oacute;n de torneos online</h1>
         <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
         <p>To see the difference between static and fixed top navbars, just scroll.</p>
         <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+          <a class="btn btn-lg btn-primary" href="https://github.com/braisNQ/PFC" target="_blank" role="button">Ver en Github &raquo;</a>
         </p>
       </div>
 

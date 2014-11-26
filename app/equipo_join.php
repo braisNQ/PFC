@@ -56,22 +56,26 @@
                 $id= $_POST['id'];
             $equipo = new equipo($id);
 
-            //se non é admin ou o propietario
-            if(($_SESSION['ID'] != $equipo->getIDPropietario()) && !$usuarioActual->admin())
-            {
-                aviso("danger", "Ups! non deberías estar aqu&iacute;.", "lista_equipos.php", "Voltar &aacute; lista de equipos");
-            }
-            else
+            //se non ten equipo
+            if(!$usuarioActual->getIDequipo())
             {
                 //se se pulsou o botón
                 if(isset($_POST['accion']))
                 {
-                    if($_POST['accion'] == "eliminar")
+                    if($_POST['accion'] == "entrar")
                     {
-                        if($equipo->eliminar())
-                            aviso("success", "Equipo eliminado correctamente.", "lista_equipos.php", "Voltar &aacute; lista de equipos");
+                        //se o código é correcto
+                        if($_POST['codigo'] == $equipo->getCodigoIngreso())
+                        {
+                            if($usuarioActual->entrarEquipo($id))
+                                aviso("success", "Benvid@ ao equipo <b>".$equipo->getNome()."</b>.", "equipo.php?id=".$id, "Ir ao equipo");
+                            else
+                                aviso("danger", "Ocorreu un erro ao unirse ao equipo.", "equipo.php?id=".$id, "Voltar ao perfil");
+                        }
                         else
-                            aviso("danger", "Ocorreu un erro ao eliminar o equipo.", "equipo.php?id=".$id."&tab=editar", "Voltar ao perfil");
+                            aviso("danger", "O c&oacute;digo introducido non &eacute; correcto.", "equipo_join.php?id=".$id, "Tentar de novo");
+
+
                     }
                     //se chegou sen o botón de eliimnar
                     else
@@ -83,19 +87,28 @@
                 else
                 {
                     echo '
-                        <form class="form-horizontal" role="form" id="formEliminarEquipo" action="equipo_delete.php" method="post">
+                        <form class="form-horizontal" role="form" id="formEntrarEquipo" action="equipo_join.php" method="post">
                             <input type="hidden" id="id" name="id" value="'.$id.'">                    
-                            <div class="alert alert-info" role="alert">Est&aacute;s seguro de querer eliminar o equipo <b>'.$equipo->getNome().'</b>?</div>                
-                            <div class="form-group">                
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-danger" id="accion" name="accion" value="eliminar"><span class="glyphicon glyphicon-remove-sign"></span> Eliminar equipo</button>
-                                    <a href="equipo.php?id='.$id.'" class="btn btn-default">Voltar ao perfil</a>
+                            <div class="alert alert-info" role="alert">
+                                <div class="text-center">            
+                                    Introduce o c&oacute;digo de ingreso do equipo <b>'.$equipo->getNome().'</b>
+                                    <br /><br />         
+                                    <div class="form-group">         
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control" id="codigo" name="codigo" maxlength="10" placeholder="C&oacute;digo" required>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success" id="accion" name="accion" value="entrar">Entrar en equipo</button>
                                 </div>
-                              </div>
+                            </div> 
                         </form>
                     ';
                 }
+            }
+            //se ten equipo
+            else
+            {
+                aviso("danger", "Xa tes un equipo!.", "equipo.php?id=".$usuarioActual->getIDequipo(), "Ver o meu equipo");
             }
         }
             

@@ -31,11 +31,10 @@ class equipo
         
         $this->id = $i;    
         
-         $mi = mysqli_real_escape_string($this->bd->conexion, $i);
-         $sql = "select nome, ID_propietario, codigo_ingreso, (select Usuario.nome from Usuario where Usuario.ID = Equipo.ID_propietario) as nomePropietario from Equipo where ID = '".$mi."'";
+        $mi = mysqli_real_escape_string($this->bd->conexion, $i);
+        $sql = "select nome, ID_propietario, codigo_ingreso, (select Usuario.nome from Usuario where Usuario.ID = Equipo.ID_propietario) as nomePropietario from Equipo where ID = '".$mi."'";
         $u = mysqli_query($this->bd->conexion, $sql);    
         
-        echo $sql;
         if($u->num_rows > 0)
         {
             while($row = $u->fetch_assoc())
@@ -77,10 +76,10 @@ class equipo
      */
      function eliminar()
      {
-         $sql = "update Usuario set ID_equipo = NULL where ID_equipo ='".$this->id."'";
+        $sql = "update Usuario set ID_equipo = NULL where ID_equipo ='".$this->id."'";
         $toret = mysqli_query($this->bd->conexion, $sql);
         
-         $sql = "delete from Equipo where ID='".$this->id."'";        
+        $sql = "delete from Equipo where ID='".$this->id."'";        
         return ($toret && mysqli_query($this->bd->conexion, $sql));
      }
      
@@ -90,7 +89,8 @@ class equipo
       */
      function listaMembros()
      {
-         $sql = "select id, login, nome from Usuario where ID_equipo ='".$this->id."'";
+        $sql = "select id, login, nome from Usuario where ID_equipo ='".$this->id."'";
+        return mysqli_query($this->bd->conexion, $sql);
      }
      
      /*
@@ -110,6 +110,24 @@ class equipo
      {
          return $this->nomePropietario;
      }
+
+    /*
+    * función getIDPropietario()
+    * devolve o nome do propietario
+    */
+     function getIDPropietario()
+     {
+         return $this->ID_propietario;
+     }
+
+    /*
+    * función getCodigoIngreso()
+    * devolve o nome do propietario
+    */
+     function getCodigoIngreso()
+     {
+         return $this->codigo_ingreso;
+     }
      
      /*
       * función getNumMembros()
@@ -117,11 +135,23 @@ class equipo
       */
      function getNumMembros()
      {
-         $sql = "select * from Usuario where ID_equipo = '".$this->id."'";
+        $sql = "select * from Usuario where ID_equipo = '".$this->id."'";
         $res = mysqli_query($this->bd->conexion, $sql);
         return $res->num_rows;        
      }
-     
+
+    /*
+      * funcion editar($nome, $codigo)
+      * edita os datos de nome e codigo do equipo
+      */
+     function editar($nome, $codigo)
+     {
+        $n = mysqli_real_escape_string($this->bd->conexion, $nome);    
+        $c = mysqli_real_escape_string($this->bd->conexion, $codigo);
+
+        $sql = "update Equipo set nome = '".$n."', codigo_ingreso = '".$c."' where ID = '".$this->id."'";
+        return mysqli_query($this->bd->conexion, $sql);
+     }    
      
      
 }

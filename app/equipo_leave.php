@@ -56,8 +56,8 @@
                 $id= $_POST['id'];
             $equipo = new equipo($id);
 
-            //se non é admin ou o propietario
-            if(($_SESSION['ID'] != $equipo->getIDPropietario()) && !$usuarioActual->admin())
+            //se non é o teu equipo
+            if($id != $usuarioActual->getIDequipo())
             {
                 aviso("danger", "Ups! non deberías estar aqu&iacute;.", "lista_equipos.php", "Voltar &aacute; lista de equipos");
             }
@@ -66,12 +66,12 @@
                 //se se pulsou o botón
                 if(isset($_POST['accion']))
                 {
-                    if($_POST['accion'] == "eliminar")
+                    if($_POST['accion'] == "sair")
                     {
-                        if($equipo->eliminar())
-                            aviso("success", "Equipo eliminado correctamente.", "lista_equipos.php", "Voltar &aacute; lista de equipos");
+                        if($usuarioActual->sairEquipo())
+                            aviso("success", "Xa non eres membro do equipo <b>".$equipo->getNome()."</b>.", "lista_equipos.php", "Voltar &aacute; lista de equipos");
                         else
-                            aviso("danger", "Ocorreu un erro ao eliminar o equipo.", "equipo.php?id=".$id."&tab=editar", "Voltar ao perfil");
+                            aviso("danger", "Ocorreu un erro ao sa&iacute;r do equipo.", "equipo.php?id=".$id, "Voltar ao perfil");
                     }
                     //se chegou sen o botón de eliimnar
                     else
@@ -83,13 +83,13 @@
                 else
                 {
                     echo '
-                        <form class="form-horizontal" role="form" id="formEliminarEquipo" action="equipo_delete.php" method="post">
+                        <form class="form-horizontal" role="form" id="formSairEquipo" action="equipo_leave.php" method="post">
                             <input type="hidden" id="id" name="id" value="'.$id.'">                    
-                            <div class="alert alert-info" role="alert">Est&aacute;s seguro de querer eliminar o equipo <b>'.$equipo->getNome().'</b>?</div>                
+                            <div class="alert alert-info" role="alert">Est&aacute;s seguro de querer sa&iacute;r do equipo <b>'.$equipo->getNome().'</b>?</div>                
                             <div class="form-group">                
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-danger" id="accion" name="accion" value="eliminar"><span class="glyphicon glyphicon-remove-sign"></span> Eliminar equipo</button>
+                                    <button type="submit" class="btn btn-danger" id="accion" name="accion" value="sair"><span class="glyphicon glyphicon-remove-sign"></span> Sa&iacute;r do equipo</button>
                                     <a href="equipo.php?id='.$id.'" class="btn btn-default">Voltar ao perfil</a>
                                 </div>
                               </div>

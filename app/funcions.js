@@ -45,3 +45,16 @@ function activarEdicionUsuario()
     document.forms["formEditar"].elements["btnHabilitar"].disabled = true;
 }
 
+//función activarEdicionEquipo()
+//habilita o formulario de edición de equipo
+function activarEdicionEquipo()
+{
+    document.forms["formEditar"].elements["nome"].disabled = false;    
+    document.forms["formEditar"].elements["codigo"].disabled = false;
+    
+    document.forms["formEditar"].elements["accion"].style.visibility = "visible";
+    document.forms["formEditar"].elements["accion"].disabled = false;
+    document.forms["formEditar"].elements["btnHabilitar"].style.visibility = "hidden";
+    document.forms["formEditar"].elements["btnHabilitar"].disabled = true;
+}
+

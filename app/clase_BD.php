@@ -87,7 +87,7 @@ class BD
        */
       function listarUsuarios($login, $nome, $enequipo, $tipo, $orderby, $order, $inicio, $items)
       {
-          $l = mysqli_real_escape_string($this->conexion, $login);
+        $l = mysqli_real_escape_string($this->conexion, $login);
         $n = mysqli_real_escape_string($this->conexion, $nome);
         
         $sql='';
@@ -244,14 +244,16 @@ class BD
       
      /*
       * función crearEquipo ($usuario, $nome, $nome)
-      * inserta na BD un novo usuario
+      * inserta na BD un novo equipo
       * devolve o resultado de executar a consulta
       */
      function crearEquipo($usuario, $nome, $codigo)
      {
-         $u = mysqli_real_escape_string($this->conexion, $usuario);
-        $n = mysqli_real_escape_string($this->conexion, $nome);
-        $sql = "insert into Equipo (nome, ID_propietario, codigo_ingreso) values ('".$n."', '".$u."', '".$codigo."')";
+        $u = mysqli_real_escape_string($this->conexion, $usuario);
+        $n = mysqli_real_escape_string($this->conexion, $nome);        
+        $c = mysqli_real_escape_string($this->conexion, $codigo);
+        
+        $sql = "insert into Equipo (nome, ID_propietario, codigo_ingreso) values ('".$n."', '".$u."', '".$c."')";
         return mysqli_query($this->conexion, $sql);
      }
      
