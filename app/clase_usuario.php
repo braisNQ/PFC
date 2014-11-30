@@ -77,7 +77,7 @@ class usuario
      function admin()
      {
          return ($this->tipo == 1);
-     }
+     } 
      
      /*
       * función getLogin()
@@ -172,7 +172,7 @@ class usuario
      */
      function modTorneo($idtorneo)
      {
-         $sql = "select * from TorneoModerador where ID_moderador = '".$this->id."' and ID_torneo = '".$idtorneo."'";
+        $sql = "select * from TorneoModerador where ID_moderador = '".$this->id."' and ID_torneo = '".$idtorneo."'";
         $u = mysqli_query($this->bd->conexion, $sql);    
             
         $toret= false;
@@ -279,6 +279,31 @@ class usuario
         $sql = "update Usuario set ID_equipo = NULL where ID = '".$this->id."'";
         return mysqli_query($this->bd->conexion, $sql);        
     }
+
+    /*
+     * función capitan()
+     * devolve true se o usuario é capitán dun equipo
+     */
+     function capitan()
+     {
+        $sql = "select * from Equipo where ID_propietario ='".$this->id."'";
+        $u = mysqli_query($this->bd->conexion, $sql);
+        return ($u->num_rows > 0);
+     }
+
+     /*
+     * función enTorneo($i)
+     * devolve true se o equipo do usuario está no torneo
+     */
+     function enTorneo($i)
+     {
+        $toret = false;
+        $sql = "select * from EquipoTorneo where ID_equipo ='".$this->ID_equipo."' and ID_torneo ='".$i."'";
+        $u = mysqli_query($this->bd->conexion, $sql);
+        if($u->num_rows > 0)
+            $toret = true;
+        return $toret;
+     }
 }
 
 ?>

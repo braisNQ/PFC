@@ -84,17 +84,24 @@
             //se seleccionou editar
             if($_POST['accion'] == 'editar')
             {
-                $n = $_POST['nome'];
-                $c = $_POST['codigo'];
-                
-                if($equipo->editar($n, $c))
-                    aviso("success", "O equipo <b>".$n."</b> foi actualizado correctamente.", "equipo.php?id=".$id, "Voltar ao perfil");
+                if(($_SESSION['ID'] == $equipo->getIDPropietario()) || $usuarioActual->admin())
+                {
+                    $n = $_POST['nome'];
+                    $c = $_POST['codigo'];
+                    
+                    if($equipo->editar($n, $c))
+                        aviso("success", "O equipo <b>".$n."</b> foi actualizado correctamente.", "equipo.php?id=".$id, "Voltar ao perfil");
+                    else
+                        aviso("danger", "Houbo alg&uacute;n problema durante a modificaci&oacute;n do equipo", "equipo.php?id=".$id."&tab=editar", "Voltar ao perfil");
+                }
                 else
-                    aviso("danger", "Houbo alg&uacute;n problema durante a modificaci&oacute;n do equipo", "equipo.php?id=".$id."&tab=editar", "Voltar ao perfil");
+                {
+                    aviso("danger", "Houbo alg&uacute;n erro ao intentar recuperar o equipo solicitado.", "equipo.php?id=".$id, "Voltar ao perfil");
+                }
             }
             else
             {
-                erro("Houbo alg&uacute;n erro ao intentar recuperar o equipo solicitado.");
+                aviso("danger", "Houbo alg&uacute;n erro ao intentar recuperar o equipo solicitado.", "equipo.php?id=".$id, "Voltar ao perfil");
             }
         }
         //se carga a páxina sen pulsar ningún botón
@@ -111,12 +118,15 @@
                 <li <?php if($tab=="perfil") echo 'class="active"'; ?>><a href="equipo.php?id=<?php echo $id; ?>&tab=perfil">Perfil</a></li>
                 <li <?php if($tab=="torneos") echo 'class="active"'; ?>><a href="equipo.php?id=<?php echo $id; ?>&tab=torneos">Torneos</a></li>
                 <?php
-                    if(($_SESSION['ID'] == $equipo->getIDPropietario()) || $usuarioActual->admin())
+                    if(isset($_SESSION['ID']))
                     {
-                        echo '<li ';
-                        if($tab=="editar")
-                            echo 'class="active"';
-                        echo '><a href="equipo.php?id='.$id.'&tab=editar">Editar</a></li>';
+                        if(($_SESSION['ID'] == $equipo->getIDPropietario()) || $usuarioActual->admin())
+                        {
+                            echo '<li ';
+                            if($tab=="editar")
+                                echo 'class="active"';
+                            echo '><a href="equipo.php?id='.$id.'&tab=editar">Editar</a></li>';
+                        }
                     }
                 ?>
             </ul>
@@ -164,48 +174,74 @@
 
         echo "</table>";
 
-        //se o usuario actual non ten equipo
-        //unirse
-        if(isset($_SESSION['ID']) && !$usuarioActual->getIDequipo())
+        if(isset($_SESSION['ID']))
         {
-            echo '
-                <div class="col-sm-2">            
-                    <a href="equipo_join.php?id='.$id.'" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Unirme ao equipo</a>
-                </div>
-            ';
-        }
+            //se o usuario actual non ten equipo
+            //unirse
+            if(!$usuarioActual->getIDequipo())
+            {
+                echo '
+                    <div class="col-sm-2">            
+                        <a href="equipo_join.php?id='.$id.'" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Unirme ao equipo</a>
+                    </div>
+                ';
+            }
 
-        //se o usuario actual é membro do equipo e non é o propietario
-        //sair
-        if(($_SESSION['ID'] != $equipo->getIDPropietario()) && ($usuarioActual->getIDequipo() == $id))
-        {
-            echo'
-                <div class="col-sm-2">
-                    <a href="equipo_leave.php?id='.$id.'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Sa&iacute;r do equipo</a>
-                </div>
-            ';
-        }
+            //se o usuario actual é membro do equipo e non é o propietario
+            //sair
+            if(($_SESSION['ID'] != $equipo->getIDPropietario()) && ($usuarioActual->getIDequipo() == $id))
+            {
+                echo'
+                    <div class="col-sm-2">
+                        <a href="equipo_leave.php?id='.$id.'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Sa&iacute;r do equipo</a>
+                    </div>
+                ';
+            }
 
-        //se o usuario actual é admin ou o propietario
-        //eliminar
-        if(($_SESSION['ID'] == $equipo->getIDPropietario()) || $usuarioActual->admin())
-        {
-            echo'
-                <div class="col-sm-2">
-                    <a href="equipo_delete.php?id='.$id.'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Eliminar equipo</a>
-                </div>
-            ';
+            //se o usuario actual é admin ou o propietario
+            //eliminar
+            if(($_SESSION['ID'] == $equipo->getIDPropietario()) || $usuarioActual->admin())
+            {
+                echo'
+                    <div class="col-sm-2">
+                        <a href="equipo_delete.php?id='.$id.'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Eliminar equipo</a>
+                    </div>
+                ';
+            }
         }
 
     }//perfil
     
     if($tab == "torneos")
     {
+        echo "<span>N&uacute;mero de torneos do equipo: ".$equipo->getNumTorneos()."</span>";
+        
+        echo "
+            <table class='table table-striped table-hover'>
+                <tr>
+                    <th>Nome</th>
+                </tr>
+        ";
+
+        $lista = $equipo->listaTorneos();
+        if($lista->num_rows > 0)
+        {
+            while($row = $lista->fetch_assoc())
+            {
+                echo "<tr>";
+                    echo "<td><a href='torneo.php?id=".$row['id']."'>".$row['nome']."</a></td>";  
+                echo "</tr>";
+            }
+        }
+
+        echo "</table>";
         
     }//torneos
     
     if($tab == "editar")
     {
+        if(($_SESSION['ID'] == $equipo->getIDPropietario()) || $usuarioActual->admin())
+        {
 ?>
 
 
@@ -233,7 +269,8 @@
         </div>
     </form> 
         
-<?php    
+<?php  
+        } 
     }//editar
     
     

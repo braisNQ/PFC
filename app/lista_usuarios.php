@@ -141,7 +141,7 @@
                         </div>
                         <label for="items" class="col-sm-2 control-label input-sm">Resultados por p&aacute;xina</label>
                         <div class="col-sm-1">
-                            <input type="number" class="form-control input-sm" id="items" name="items" min="1" max="20" step="1" value="<?php echo $items;?>">
+                            <input type="number" class="form-control input-sm" id="items" name="items" min="1" max="20" step="1" value="<?php echo $items;?>" required>
                         </div>                        
                       </div>
                     <div class="form-group">                        

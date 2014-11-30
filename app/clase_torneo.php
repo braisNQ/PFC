@@ -64,4 +64,104 @@ class torneo
      {
          return $this->existe;
      }
+
+      /*
+      * función getNome()
+      * devolve o nome do torneo
+      */
+     function getNome()
+     {
+         return $this->nome;
+     }
+
+    /*
+      * función getNumVoltas()
+      * devolve o número de voltas
+      */
+     function getNumVoltas()
+     {
+         return $this->numero_voltas;
+     }
+
+     /*
+      * función getPuntosVictoria()
+      * devolve o número de puntos por victoria
+      */
+     function getPuntosVictoria()
+     {
+         return $this->puntos_victoria;
+     }
+
+     /*
+      * función getPuntosEmpate()
+      * devolve o número de puntos por empate
+      */
+     function getPuntosEmpate()
+     {
+         return $this->puntos_empate;
+     }
+
+     /*
+      * función getPuntosDerrota()
+      * devolve o número de puntos por derrota
+      */
+     function getPuntosDerrota()
+     {
+         return $this->puntos_derrota;
+     }
+
+     /*
+      * función iniciado()
+      * devolve true se o torneo está iniciado
+      */
+     function iniciado()
+     {
+        $toret = false;
+        if($this->iniciado == 1)
+            $toret = true;
+        return $toret;
+     }
+
+     /*
+      * función eliminar()
+      * elimina un torneo da BD 
+     */
+     function eliminar()
+     {        
+        $sql = "delete from Torneo where ID='".$this->id."'";
+        echo $sql;
+        //$u = mysqli_query($this->bd->conexion, $sql);
+       
+        return (mysqli_query($this->bd->conexion, $sql));
+        
+     }
+
+    /*
+      * funcion editar($nome, $voltas, $p_victoria, $p_empate, $p_derrota)
+      * edita as preferencias dun torneo
+      */
+     function editar($nome, $voltas, $p_victoria, $p_empate, $p_derrota)
+     {
+        $n = mysqli_real_escape_string($this->bd->conexion, $nome);
+
+        $sql = "update Torneo set nome = '".$n."', numero_voltas = '".$voltas."', puntos_victoria = '".$p_victoria."', puntos_empate = '".$p_empate."', puntos_derrota = '".$p_derrota."' where ID = '".$this->id."'";
+        return mysqli_query($this->bd->conexion, $sql);
+     }
+
+     /*
+     * función agregarEquipo($i)
+     * Inscribe un equipo no torneo
+     */
+     function agregarEquipo($i)
+     {  
+        $sql = "insert into EquipoTorneo (ID_torneo, ID_equipo) values ('".$this->id."', '".$i."')";
+        return mysqli_query($this->bd->conexion, $sql);
+     }
+
+
+
+
+
+
+
 }

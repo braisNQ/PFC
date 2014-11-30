@@ -40,7 +40,7 @@
     //lanza erro
     if((!isset($_GET['id']) && !isset($_POST['id'])) || !isset($_SESSION['ID'])  )
     {
-        erro("Houbo alg&uacute;n erro ao intentar recuperar o usuario solicitado.");
+        aviso("danger", "Houbo alg&uacute;n erro ao intentar recuperar o usuario solicitado", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
     }
     else
     {        
@@ -55,7 +55,7 @@
         //lanza erro
         if(!$user->existe())
         {
-            erro("Houbo alg&uacute;n erro ao intentar recuperar o usuario solicitado.");
+            aviso("danger", "Houbo alg&uacute;n erro ao intentar recuperar o usuario solicitado", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
         }
         else
         {
@@ -65,17 +65,24 @@
                 //se seleccionou editar
                 if($_POST['accion'] == 'editar')
                 {
-                    $n = $_POST['nome'];
-                    $p = $_POST['contrasinal'];
-                    
-                    if($user->editar($n, $p))
-                        aviso("success", $n." foi actualizado correctamente.", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
+                    if($usuarioActual->admin() || ($id == $_SESSION['ID']))
+                    {
+                        $n = $_POST['nome'];
+                        $p = $_POST['contrasinal'];
+                        
+                        if($user->editar($n, $p))
+                            aviso("success", $n." foi actualizado correctamente.", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
+                        else
+                            aviso("danger", "Houbo alg&uacute;n problema durante a modificaci&oacute;n do perfil", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
+                    }
                     else
+                    {
                         aviso("danger", "Houbo alg&uacute;n problema durante a modificaci&oacute;n do perfil", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
+                    }
                 }
                 else
                 {
-                    erro("Houbo alg&uacute;n erro ao intentar recuperar o usuario solicitado.");
+                    aviso("danger", "Houbo alg&uacute;n problema durante a modificaci&oacute;n do perfil", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
                 }
             }
             //se carga a páxina sen pulsar ningún botón
@@ -114,13 +121,20 @@
                             ?>
                         </label>
                      </div>
-                      <div class="form-group">                      
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-default" id="btnHabilitar" name="btnHabilitar" onClick="activarEdicionUsuario()"><span class='glyphicon glyphicon-edit'></span> Habilitar edici&oacute;n</button>    
-                            <button type="submit" class="btn btn-success" id="accion" name="accion" value="editar"  onClick="md5editar()" disabled style="visibility:hidden">Editar perfil</button>
-                        </div>
-                      </div>
+                     <?php
+                        if($usuarioActual->admin() || ($id == $_SESSION['ID']))
+                        {
+                        ?>
+                          <div class="form-group">                      
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-default" id="btnHabilitar" name="btnHabilitar" onClick="activarEdicionUsuario()"><span class='glyphicon glyphicon-edit'></span> Habilitar edici&oacute;n</button>    
+                                <button type="submit" class="btn btn-success" id="accion" name="accion" value="editar"  onClick="md5editar()" disabled style="visibility:hidden">Editar perfil</button>
+                            </div>
+                          </div>
+                        <?php
+                        }
+                        ?>
                              
                      </fieldset>
                 </form>

@@ -92,6 +92,16 @@ class equipo
         $sql = "select id, login, nome from Usuario where ID_equipo ='".$this->id."'";
         return mysqli_query($this->bd->conexion, $sql);
      }
+
+    /*
+      * función listaTorneos()
+      * devolve a lista de torneos nos que está o equipo
+      */
+     function listaTorneos()
+     {
+        $sql = "select Torneo.ID as id, Torneo.nome as nome from Torneo, EquipoTorneo where EquipoTorneo.ID_torneo = Torneo.ID and EquipoTorneo.ID_equipo ='".$this->id."'";
+        return mysqli_query($this->bd->conexion, $sql);
+     }
      
      /*
       * función getNome()
@@ -136,6 +146,17 @@ class equipo
      function getNumMembros()
      {
         $sql = "select * from Usuario where ID_equipo = '".$this->id."'";
+        $res = mysqli_query($this->bd->conexion, $sql);
+        return $res->num_rows;        
+     }
+
+     /*
+      * función getNumTorneos()
+      * devolve o número de torneos nos que está o equipo
+      */
+     function getNumTorneos()
+     {
+        $sql = "select * from EquipoTorneo where ID_equipo = '".$this->id."'";
         $res = mysqli_query($this->bd->conexion, $sql);
         return $res->num_rows;        
      }

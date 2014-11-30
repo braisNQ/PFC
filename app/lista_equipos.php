@@ -102,7 +102,7 @@
                         </div>
                         <label for="items" class="col-sm-2 control-label input-sm">Resultados por p&aacute;xina</label>
                         <div class="col-sm-1">
-                            <input type="number" class="form-control input-sm" id="items" name="items" min="1" max="20" step="1" value="<?php echo $items;?>">
+                            <input type="number" class="form-control input-sm" id="items" name="items" min="1" max="20" step="1" value="<?php echo $items;?>" required>
                         </div>
                     </div>
                       <div class="form-group">                        
@@ -166,7 +166,7 @@
                     {
                         if(($row['ID_propietario'] == $_SESSION['ID']) || $usuarioActual->admin())
                         {
-                            echo "<a class='btn btn-default btn-xs' href='equipo.php?id=".$row['ID']."&tab=editar'><span class='glyphicon glyphicon-edit' data-toggle='tooltip' data-placement='top' title='Editar equipo'></span></a> ";
+                            echo "<a class='btn btn-info btn-xs' href='equipo.php?id=".$row['ID']."&tab=editar'><span class='glyphicon glyphicon-edit' data-toggle='tooltip' data-placement='top' title='Editar equipo'></span></a> ";
                             echo "<a class='btn btn-danger btn-xs' href='equipo_delete.php?id=".$row['ID']."'><span class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' data-placement='top' title='Eliminar equipo'></span></a> ";
                         }
                     }

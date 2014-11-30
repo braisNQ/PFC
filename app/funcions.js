@@ -38,9 +38,9 @@ function activarEdicionUsuario()
 {
     document.forms["formEditar"].elements["nome"].disabled = false;    
     document.forms["formEditar"].elements["contrasinal"].disabled = false;
-    document.forms["formEditar"].elements["accion"].disabled = false;
-    
+
     document.forms["formEditar"].elements["accion"].style.visibility = "visible";
+    document.forms["formEditar"].elements["accion"].disabled = false;    
     document.forms["formEditar"].elements["btnHabilitar"].style.visibility = "hidden";
     document.forms["formEditar"].elements["btnHabilitar"].disabled = true;
 }
@@ -57,4 +57,21 @@ function activarEdicionEquipo()
     document.forms["formEditar"].elements["btnHabilitar"].style.visibility = "hidden";
     document.forms["formEditar"].elements["btnHabilitar"].disabled = true;
 }
+
+//función activarEdicionTorneo()
+//habilita o formulario de edición de torneo
+function activarEdicionTorneo()
+{
+    document.forms["formEditar"].elements["nome"].disabled = false;    
+    document.forms["formEditar"].elements["numero_voltas"].disabled = false;  
+    document.forms["formEditar"].elements["puntos_victoria"].disabled = false;  
+    document.forms["formEditar"].elements["puntos_empate"].disabled = false;  
+    document.forms["formEditar"].elements["puntos_derrota"].disabled = false;
+    
+    document.forms["formEditar"].elements["accion"].style.visibility = "visible";
+    document.forms["formEditar"].elements["accion"].disabled = false;
+    document.forms["formEditar"].elements["btnHabilitar"].style.visibility = "hidden";
+    document.forms["formEditar"].elements["btnHabilitar"].disabled = true;
+}
+
 

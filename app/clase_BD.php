@@ -76,7 +76,7 @@ class BD
       */
       function numeroUsuarios()
       {
-          $sql = "select * from Usuario where ID > 1";
+        $sql = "select * from Usuario where ID > 1";
         $res = mysqli_query($this->conexion, $sql);
         return $res->num_rows;        
       }
@@ -118,7 +118,7 @@ class BD
        */
       function listarUsuariosCont($login, $nome, $enequipo, $tipo)
       {
-          $l = mysqli_real_escape_string($this->conexion, $login);
+        $l = mysqli_real_escape_string($this->conexion, $login);
         $n = mysqli_real_escape_string($this->conexion, $nome);
         
         $sql='';
@@ -130,12 +130,12 @@ class BD
         $sql = $sql."and login like '%".$l."%' ";
         
         if($enequipo == 1)
-            $sql = $sql."and ID_equipo is NULL ";
+          $sql = $sql."and ID_equipo is NULL ";
         if($enequipo == 2)
-            $sql = $sql."and ID_equipo is not NULL ";
+          $sql = $sql."and ID_equipo is not NULL ";
         
         if($tipo > 0)
-            $sql = $sql."and tipo =".$tipo." ";
+          $sql = $sql."and tipo =".$tipo." ";
         
         $toret = 0;
         
@@ -206,41 +206,60 @@ class BD
       */
       function numeroTorneos()
       {
-          $sql = "select * from Torneos";
+        $sql = "select * from Torneo";
         $res = mysqli_query($this->conexion, $sql);
-        return $res->num_rows;        
+        return $res->num_rows;    
       }
       
       /*
        * función listarTorneos
        * devolve a lista de torneos que cumplen un filtro específico
        */
-      function listarTorneos($nome, $equipos, $estado, $orderby, $order, $inicio, $items)
+      function listarTorneos($nome, $iniciado, $order, $inicio, $items)
       {
         $n = mysqli_real_escape_string($this->conexion, $nome);
-        $ne = mysqli_real_escape_string($this->conexion, $equipos);
-        $e = mysqli_real_escape_string($this->conexion, $estado);
         
         $sql='';
         $sql = $sql."select ID, nome, iniciado, ";
-        $sql = $sql." (select count(*) from EquipoTorneo where EquipoTorneo.ID_torneo = Torneo.ID) as equipos ";
-        $sql = $sql." (select count(*) from Partido where Partido.ID_torneo = Torneo.ID and Partido.resultado_confirmado = 0) as inacabados ";
-        $sql = $sql." from Usuario where ";
-        $sql = $sql."ID > 1 ";
-        $sql = $sql."and nome like '%".$n."%' ";
-        $sql = $sql."and login like '%".$l."%' ";
-        
-        if($enequipo == "on")
-            $sql = $sql."and ID_equipo is not NULL ";
-        
-        if($tipo > 0)
-            $sql = $sql."and tipo =".$tipo." ";
+        $sql = $sql."(select count(*) from EquipoTorneo where EquipoTorneo.ID_torneo = Torneo.ID) as equipos, ";
+        $sql = $sql."(select count(*) from Partido where Partido.ID_torneo = Torneo.ID and Partido.resultado_confirmado = 0) as pendentes ";
+        $sql = $sql." from Torneo where ";
+        $sql = $sql."nome like '%".$n."%' ";
+
+        if($iniciado != -1)
+            $sql = $sql."and iniciado =".$iniciado." ";
                     
-        $sql = $sql."order by ".$orderby." ".$order." ";        
+        $sql = $sql."order by nome ".$order." ";        
         $sql = $sql."limit " . $inicio . "," . $items." " ;
         
         return mysqli_query($this->conexion, $sql);          
       }
+
+      /*
+       * función listarTorneosCont
+       * devolve o número de torneos que cumplen un filtro específico
+       */
+      function listarTorneosCont($nome, $iniciado)
+      {
+        $n = mysqli_real_escape_string($this->conexion, $nome);
+        
+        $sql='';
+        $sql = $sql."select ID, nome, iniciado, ";
+        $sql = $sql."(select count(*) from EquipoTorneo where EquipoTorneo.ID_torneo = Torneo.ID) as equipos, ";
+        $sql = $sql."(select count(*) from Partido where Partido.ID_torneo = Torneo.ID and Partido.resultado_confirmado = 0) as pendentes ";
+        $sql = $sql." from Torneo where ";
+        $sql = $sql."nome like '%".$n."%' ";
+
+        if($iniciado != -1)
+            $sql = $sql."and iniciado =".$iniciado." ";
+        
+        $toret = 0;
+        
+        if($u = mysqli_query($this->conexion, $sql))
+            $toret = $u->num_rows;
+        
+        return $toret;            
+      } 
       
      /*
       * función crearEquipo ($usuario, $nome, $nome)
@@ -265,6 +284,32 @@ class BD
      {    
         $n = mysqli_real_escape_string($this->conexion, $nome);
         $sql = "select * from Equipo where nome ='".$n."'";
+        
+        return (mysqli_query($this->conexion, $sql)->num_rows > 0);
+     }
+
+      
+     /*
+      * función crearTorneo ($nome, $voltas, $victoria, $empate, $derrota)
+      * inserta na BD un novo equipo
+      * devolve o resultado de executar a consulta
+      */
+     function crearTorneo($nome, $voltas, $victoria, $empate, $derrota)
+     {
+        $n = mysqli_real_escape_string($this->conexion, $nome); 
+        
+        $sql = "insert into Torneo (nome, numero_voltas, puntos_victoria, puntos_empate, puntos_derrota, iniciado) values ('".$n."', '".$voltas."', '".$victoria."', '".$empate."', '".$derrota."', '0')";
+        return mysqli_query($this->conexion, $sql);
+     }
+     
+     /*
+      * función existeEquipo($nome)
+      * devolve true se existe o nome de equipo na BD
+      */
+     function existeTorneo($nome)
+     {    
+        $n = mysqli_real_escape_string($this->conexion, $nome);
+        $sql = "select * from Torneo where nome ='".$n."'";
         
         return (mysqli_query($this->conexion, $sql)->num_rows > 0);
      }

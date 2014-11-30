@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `pfc`.`Torneo` (
   `puntos_victoria` TINYINT NOT NULL,
   `puntos_empate` TINYINT NOT NULL,
   `puntos_derrota` TINYINT NOT NULL,
-  `iniciado` VARCHAR(45) NOT NULL DEFAULT 0,
+  `iniciado` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   UNIQUE INDEX `ID_UNIQUE` (`ID` ASC),
   UNIQUE INDEX `nome_UNIQUE` (`nome` ASC))
