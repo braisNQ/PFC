@@ -162,11 +162,18 @@
                                 </div>
                             ';
                         else
+                        {
                             echo '                    
                                 <div class="col-sm-2">
                                     <a href="admin_give.php?id='.$id.'" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Facer administrador</a>
                                 </div>
                             ';
+                            echo '                    
+                                <div class="col-sm-2">
+                                    <a href="mod_give.php?id='.$id.'" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Facer moderador</a>
+                                </div>
+                            ';
+                        }
                     }
                     echo '</fieldset>';
                 }

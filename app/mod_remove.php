@@ -37,7 +37,6 @@
       <div class="jumbotron">
         
 <?php
-
     //se chega sen loguear ou non é admin
     if(!isset($_SESSION['ID']) || !$usuarioActual->admin())
     {
@@ -46,45 +45,53 @@
     else
     {
         //se non hai ningunha id
-        if(!isset($_GET['id']) && !isset($_POST['id']))
-            aviso("danger", "Ocorreu alg&uacute;n erro ao obter o usuario.", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
+        if(!isset($_GET['id']) && !isset($_POST['id']) && !isset($_GET['torneo']) && !isset($_POST['torneo']))
+            aviso("danger", "Ocorreu alg&uacute;n erro ao obter o usuario.", "lista_torneos.php", "Voltar &aacute; lista de torneos");
         else
         {        
             $id;
+            $torneo;
             if(isset($_GET['id']))
                 $id= $_GET['id'];
             if(isset($_POST['id']))
-                $id= $_POST['id'];
-            $usuario = new usuario($id);
+                $id= $_POST['id'];            
+            if(isset($_GET['torneo']))
+                $torneo= $_GET['torneo'];
+            if(isset($_POST['torneo']))
+                $torneo= $_POST['torneo'];
+
+            $user = new usuario($id);
             
             //se se pulsou o botón
             if(isset($_POST['accion']))
             {
-                if($_POST['accion'] == "eliminar")
+                if($_POST['accion'] == "quitar")
                 {
-                    if($usuario->eliminar())
-                        aviso("success", "Usuario eliminado correctamente.", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
+                    if($user->quitarMod($torneo))
+                        aviso("success", "O usuario ".$user->getNome()." xa non &eacute; moderador no torneo.", "torneo.php?id=".$torneo, "Voltar ao torneo");
                     else
-                        aviso("danger", "Ocorreu un erro ao eliminar o usuario.", "usuario.php?id=".$id."&tab=editar", "Voltar ao perfil");
+                        aviso("danger", "Ocorreu un erro ao retirar a moderaci&oacute;n.", "torneo.php?id=".$torneo, "Voltar ao torneo");
+
                 }
-                //se chegou sen o botón
+                //se chegou sen o botón de dar admin
                 else
                 {
-                    aviso("danger", "Ocorreu un erro.", "usuario.php?id=".$id, "Voltar ao perfil");
+                    aviso("danger", "Ocorreu un erro.", "torneo.php?id=".$torneo, "Voltar ao torneo");
                 }
             }
             //mostrar formulario inicial
             else
             {
                 echo '
-                    <form class="form-horizontal" role="form" id="formEliminarUsuario" action="usuario_delete.php" method="post">
-                        <input type="hidden" id="id" name="id" value="'.$id.'">                    
-                        <div class="alert alert-info" role="alert">Est&aacute;s seguro de querer eliminar o usuario <b>'.$usuario->getNome().'?</b></div>                
+                    <form class="form-horizontal" role="form" id="formQuitarMod" action="mod_remove.php" method="post">
+                        <input type="hidden" id="id" name="id" value="'.$id.'">
+                        <input type="hidden" id="torneo" name="torneo" value="'.$torneo.'">                  
+                        <div class="alert alert-info" role="alert">Est&aacute;s seguro de retirar o cargo de moderador/a a <b>'.$user->getNome().'?</b></div>                
                         <div class="form-group">                
                             <div class="col-sm-2"></div>
                             <div class="col-sm-6">
-                                <button type="submit" class="btn btn-danger" id="accion" name="accion" value="eliminar"><span class="glyphicon glyphicon-remove-sign"></span> Eliminar usuario</button>
-                                <a href="usuario.php?id='.$id.'" class="btn btn-default">Voltar ao perfil</a>
+                                <button type="submit" class="btn btn-danger" id="accion" name="accion" value="quitar"><span class="glyphicon glyphicon-minus-sign"></span> Quitar moderador</button>
+                                <a href="torneo.php?id='.$torneo.'" class="btn btn-default">Voltar ao torneo</a>
                             </div>
                           </div>
                     </form>
@@ -93,7 +100,6 @@
         }
             
     }
-    
 
 ?>
 

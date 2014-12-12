@@ -128,12 +128,8 @@ class torneo
      */
      function eliminar()
      {        
-        $sql = "delete from Torneo where ID='".$this->id."'";
-        echo $sql;
-        //$u = mysqli_query($this->bd->conexion, $sql);
-       
-        return (mysqli_query($this->bd->conexion, $sql));
-        
+        $sql = "delete from Torneo where ID='".$this->id."'";       
+        return (mysqli_query($this->bd->conexion, $sql));        
      }
 
     /*
@@ -157,6 +153,51 @@ class torneo
         $sql = "insert into EquipoTorneo (ID_torneo, ID_equipo) values ('".$this->id."', '".$i."')";
         return mysqli_query($this->bd->conexion, $sql);
      }
+
+    /*
+    * función listaEquipos
+    * devolve a lista de ids de equipos apuntados ao torneo
+    */
+    function listaEquipos()
+    {
+        $sql = "select ID_equipo, (select nome from Equipo where Equipo.ID=EquipoTorneo.ID_equipo) as nome from EquipoTorneo where ID_torneo ='".$this->id."'";
+        return mysqli_query($this->bd->conexion, $sql);          
+    }
+
+    function getVoltas()
+    {
+        return $this->numero_voltas;
+    }
+
+    function iniciar()
+    {
+        $sql = "update Torneo set iniciado=1 where ID='".$this->id."'";
+        return mysqli_query($this->bd->conexion, $sql);
+    }
+
+    function crearPartido($e1, $e2)
+    {
+        $sql = "insert into Partido (ID_equipo1, ID_equipo2, ID_torneo) values ('".$e1."', '".$e2."', '".$this->id."')";
+        return mysqli_query($this->bd->conexion, $sql);
+    }
+
+    function listaPartidos()
+    {
+        $sql = "select ID, ID_equipo1, (select nome from Equipo where Equipo.ID = Partido.ID_equipo1) as nome1, ID_equipo2, (select nome from Equipo where Equipo.ID = Partido.ID_equipo2) as nome2, data, data_confirmada, resultado_eq1, resultado_eq2, resultado_confirmado from Partido where ID_torneo ='".$this->id."'";
+        return mysqli_query($this->bd->conexion, $sql);  
+    }
+
+    function listaMods()
+    {
+        $sql = "select ID, nome from Usuario where ID in (select ID_moderador from TorneoModerador where ID_torneo=".$this->id.")";
+        return mysqli_query($this->bd->conexion, $sql);  
+    }
+
+    function partidosEquipo($id)
+    {
+        $sql = "select ID_equipo1, ID_equipo2, resultado_eq1, resultado_eq2 from Partido where ID_torneo ='".$this->id."' and (ID_equipo1 ='".$id."' or ID_equipo2 ='".$id."') and resultado_confirmado=1";
+        return mysqli_query($this->bd->conexion, $sql);
+    }
 
 
 

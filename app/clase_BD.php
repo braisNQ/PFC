@@ -151,7 +151,7 @@ class BD
       */
       function numeroEquipos()
       {
-          $sql = "select * from Equipo";
+        $sql = "select * from Equipo";
         $res = mysqli_query($this->conexion, $sql);
         return $res->num_rows;        
       }
@@ -312,6 +312,12 @@ class BD
         $sql = "select * from Torneo where nome ='".$n."'";
         
         return (mysqli_query($this->conexion, $sql)->num_rows > 0);
+     }
+
+     function listaTorneosMod($id)
+     {
+        $sql="select ID, nome from Torneo where ID not in (select ID_torneo from TorneoModerador where ID_moderador=".$id.")";
+        return mysqli_query($this->conexion, $sql);
      }
 }
 

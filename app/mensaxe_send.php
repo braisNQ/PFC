@@ -55,32 +55,21 @@
             if(isset($_POST['id']))
                 $id= $_POST['id'];
             
-            $resposta;
-            if(isset($_GET['resposta']))
-                $resposta= $_GET['resposta'];
-            if(isset($_POST['resposta']))
-                $resposta= $_POST['resposta'];
-            
-            $incidencia;
-            if(isset($_GET['incidencia']))
-                $incidencia= $_GET['incidencia'];
-            if(isset($_POST['incidencia']))
-                $incidencia= $_POST['incidencia'];
-            
+            $user = new usuario($id);
             
             //se se pulsou o botón
             if(isset($_POST['accion']))
             {
                 if($_POST['accion'] == "enviar")
                 {
-                    /*
-                    if($user->darAdmin())
-                        aviso("success", "O usuario ".$user->getNome()." xa &eacute; administrador.", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
-                    else
-                        aviso("danger", "Ocorreu un erro no asignamento de administraci&oacute;n.", "usuario.php?id=".$id, "Voltar ao perfil");
-                     * */
-                     
+                    $asunto=$_POST['asunto'];
+                    $txt=$_POST['txt'];
+                    $data=date('Y-m-d H:i:s');
 
+                    if($usuarioActual->enviarMensaxe($id,$asunto,$txt,$data))
+                        aviso("success", "Mensaxe enviada correctamente", "mensaxes.php", "Ir a mensaxes");
+                    else
+                        aviso("danger", "Ocorreu ao enviar a mensaxe.", "mensaxe_send.php?id=".$id, "Tentar de novo");
                 }
                 //se chegou sen o botón de dar admin
                 else
@@ -91,60 +80,33 @@
             //mostrar formulario inicial
             else
             {
-                echo '
-                    <form class="form-horizontal" role="form" id="formDarAdmin" action="admin_give.php" method="post">
-                        <input type="hidden" id="id" name="id" value="'.$id.'">                    
-                        <div class="alert alert-info" role="alert">Est&aacute;s seguro de nomear a <b>'.$user->getNome().' como administrador?</b></div>                
-                        <div class="form-group">                
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-6">
-                                <button type="submit" class="btn btn-success" id="accion" name="accion" value="dar"><span class="glyphicon glyphicon-plus-sign"></span> Facer administrador</button>
-                                <a href="usuario.php?id='.$id.'" class="btn btn-default">Voltar ao perfil</a>
-                            </div>
-                          </div>
-                    </form>
-                ';
                 
             ?>
-            
-            <div class="container">
-            <div class="jumbotron">
-                <form class="form-horizontal" role="form" id="formEditar" action="usuario.php" method="post">
+                <form class="form-horizontal" role="form" id="formEnviarMensaxe" action="mensaxe_send.php" method="post">
                     <input type="hidden" value="<?php echo $id;?>" name="id" id="id">
                     <fieldset id="fieldEditar">
-                    <legend><?php echo $user->getLogin();?></legend>             
+                    <legend>Mensaxe para <?php echo $user->getNome();?></legend>             
                      <div class="form-group">
-                        <label for="nome" class="col-sm-2 control-label">Nome</label>
+                        <label for="asunto" class="col-sm-2 control-label">Asunto</label>
                         <div class="col-sm-4">
-                              <input type="text" class="form-control" id="nome" name="nome" maxlength="50" value="<?php echo $user->getNome();?>" disabled required>
+                              <input type="text" class="form-control" id="asunto" name="asunto" maxlength="50" placeholder="Asunto" required>
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="contrasinal" class="col-sm-2 control-label">Contrasinal</label>
+                        <label for="contrasinal" class="col-sm-2 control-label">Mensaxe</label>
                         <div class="col-sm-4">
-                              <input type="password" class="form-control" id="contrasinal" name="contrasinal" maxlength="50" placeholder="Escribe un novo contrasinal" disabled required>
+                            <textarea class="form-control" id="txt" name="txt" rows=10 placeholder="Escribe unha ensaxe" required></textarea>
                         </div>
                      </div>
-                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Equipo</label>
-                        <label class="col-sm-4 control-label">
-                            <?php
-                                if($user->getNomeEquipo() != '')
-                                    echo "<a href='equipo.php?id=".$user->getIDEquipo() ."'>".$user->getNomeEquipo() ."</a>";
-                                else
-                                    echo "Sen equipo";
-                            ?>
-                        </label>
-                     </div>
-                      <div class="form-group">                      
+                    <div class="form-group">                
                         <div class="col-sm-2"></div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-default" id="btnHabilitar" name="btnHabilitar" onClick="activarEdicionUsuario()"><span class='glyphicon glyphicon-edit'></span> Habilitar edici&oacute;n</button>    
-                            <button type="submit" class="btn btn-success" id="accion" name="accion" value="editar"  onClick="md5editar()" disabled style="visibility:hidden">Editar perfil</button>
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-success" id="accion" name="accion" value="enviar">Enviar</button>
+                                <a href="lista_usuarios.php" class="btn btn-default">Voltar &aacute; lista de usuarios</a>
                         </div>
-                      </div>
+                    </div>
                              
-                     </fieldset>
+                    </fieldset>
                 </form>
             </div>
         </div>

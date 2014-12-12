@@ -37,7 +37,6 @@
       <div class="jumbotron">
         
 <?php
-
     //se chega sen loguear ou non é admin
     if(!isset($_SESSION['ID']) || !$usuarioActual->admin())
     {
@@ -55,19 +54,21 @@
                 $id= $_GET['id'];
             if(isset($_POST['id']))
                 $id= $_POST['id'];
-            $usuario = new usuario($id);
+            $user = new usuario($id);
             
             //se se pulsou o botón
             if(isset($_POST['accion']))
             {
-                if($_POST['accion'] == "eliminar")
+                if($_POST['accion'] == "dar")
                 {
-                    if($usuario->eliminar())
-                        aviso("success", "Usuario eliminado correctamente.", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
+                    $torneo = $_POST['torneo'];
+                    if($user->darMod($torneo))
+                        aviso("success", "O usuario ".$user->getNome()." xa &eacute; moderador no torneo.", "lista_usuarios.php", "Voltar &aacute; lista de usuarios");
                     else
-                        aviso("danger", "Ocorreu un erro ao eliminar o usuario.", "usuario.php?id=".$id."&tab=editar", "Voltar ao perfil");
+                        aviso("danger", "Ocorreu un erro no asignamento de administraci&oacute;n.", "usuario.php?id=".$id, "Voltar ao perfil");
+
                 }
-                //se chegou sen o botón
+                //se chegou sen o botón de dar admin
                 else
                 {
                     aviso("danger", "Ocorreu un erro.", "usuario.php?id=".$id, "Voltar ao perfil");
@@ -77,13 +78,32 @@
             else
             {
                 echo '
-                    <form class="form-horizontal" role="form" id="formEliminarUsuario" action="usuario_delete.php" method="post">
+                    <form class="form-horizontal" role="form" id="formDarMod" action="mod_give.php" method="post">
                         <input type="hidden" id="id" name="id" value="'.$id.'">                    
-                        <div class="alert alert-info" role="alert">Est&aacute;s seguro de querer eliminar o usuario <b>'.$usuario->getNome().'?</b></div>                
+                        <div class="alert alert-info" role="alert">Selecciona o torneo no que queres facer moderador a <b>'.$user->getNome().'</b></div>
+
+                        <div class="form-group">
+                            <label for="enquipo" class="col-sm-1 control-label input-sm">Torneos </label>
+                            <div class="col-sm-2">
+                                <select class="form-control" size="10" name="torneo" id="torneo">
+                    ';
+                    $bd = new bd();
+                    $lista = $bd->listaTorneosMod($id);
+                    if($lista->num_rows > 0)
+                    {
+                        while($row = $lista->fetch_assoc())
+                        {
+                            echo "<option value='".$row['ID']."'>".$row['nome']."</option>";
+                        }
+                    }
+                echo '
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group">                
                             <div class="col-sm-2"></div>
                             <div class="col-sm-6">
-                                <button type="submit" class="btn btn-danger" id="accion" name="accion" value="eliminar"><span class="glyphicon glyphicon-remove-sign"></span> Eliminar usuario</button>
+                                <button type="submit" class="btn btn-success" id="accion" name="accion" value="dar"><span class="glyphicon glyphicon-plus-sign"></span> Facer moderador</button>
                                 <a href="usuario.php?id='.$id.'" class="btn btn-default">Voltar ao perfil</a>
                             </div>
                           </div>
@@ -93,7 +113,6 @@
         }
             
     }
-    
 
 ?>
 

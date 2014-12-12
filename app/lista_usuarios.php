@@ -211,7 +211,7 @@
                     if(isset($_SESSION['ID']))
                     {
                         if($row['ID'] != $_SESSION['ID'])
-                            echo "<a class='btn btn-default btn-xs' href='mensaxes.php?id=".$row['ID']."'><span class='glyphicon glyphicon-envelope' data-toggle='tooltip' data-placement='top' title='Enviar mensaxe'></span></a> ";
+                            echo "<a class='btn btn-default btn-xs' href='mensaxe_send.php?id=".$row['ID']."'><span class='glyphicon glyphicon-envelope' data-toggle='tooltip' data-placement='top' title='Enviar mensaxe'></span></a> ";
                         if(($row['ID'] == $_SESSION['ID']) || $usuarioActual->admin())
                             echo "<a class='btn btn-info btn-xs' href='usuario.php?id=".$row['ID']."'><span class='glyphicon glyphicon-edit' data-toggle='tooltip' data-placement='top' title='Editar perfil'></span></a> ";
                         if($usuarioActual->admin())

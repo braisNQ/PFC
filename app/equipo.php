@@ -161,10 +161,13 @@
                     echo "<td>";
                         if(isset($_SESSION['ID']))
                         {
-                            if($row['id'] != $_SESSION['ID'])
-                                echo "<a class='btn btn-default btn-xs' href='mensaxes.php?id=".$row['id']."'><span class='glyphicon glyphicon-envelope' data-toggle='tooltip' data-placement='top' title='Enviar mensaxe'></span></a> ";
-                            if((($row['id'] != $_SESSION['ID']) && ($_SESSION['ID'] == $equipo->getIDPropietario())) || $usuarioActual->admin())
-                                echo "<a class='btn btn-danger btn-xs' href='equipo_remove.php?id=".$id."&usuario=".$row['id']."'><span class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' data-placement='top' title='Expulsar usuario'></span></a> ";
+                            if($row['id'] != $equipo->getIDPropietario())
+                            {
+                                if($row['id'] != $_SESSION['ID'])
+                                    echo "<a class='btn btn-default btn-xs' href='mensaxes.php?id=".$row['id']."'><span class='glyphicon glyphicon-envelope' data-toggle='tooltip' data-placement='top' title='Enviar mensaxe'></span></a> ";
+                                if((($row['id'] != $_SESSION['ID']) && ($_SESSION['ID'] == $equipo->getIDPropietario())) || $usuarioActual->admin())
+                                    echo "<a class='btn btn-danger btn-xs' href='equipo_remove.php?id=".$id."&usuario=".$row['id']."'><span class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' data-placement='top' title='Expulsar usuario'></span></a> ";
+                            }
                         }
                         
                     echo "</td>";

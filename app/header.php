@@ -20,6 +20,7 @@
      include_once("clase_equipo.php");
      include_once("clase_torneo.php");
      include_once("clase_partido.php");
+     include_once("clase_mensaxe.php");
      
     if (isset($_SESSION['ID']))
     {

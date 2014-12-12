@@ -1,77 +1,93 @@
 <?php
-        echo "<span>Propietario: ".$torneo->getNomePropietario()."</span>";
-        echo "<br />";
-        echo "<span>N&uacute;mero de membros: ".$torneo->getNumMembros()."</span>";
-        
-        echo "
-            <table class='table table-striped table-hover'>
-                <tr>
-                    <th>Login</th>
-                    <th>Nome</th>
-                    <th>&nbsp;</th>
-                </tr>
-        ";
 
-        $lista = $torneo->listaMembros();
+    $clasificacion=array();
+
+
+
+
+
+        $lista = $torneo->listaEquipos();
         if($lista->num_rows > 0)
         {
             while($row = $lista->fetch_assoc())
             {
-                echo "<tr>";
-                    echo "<td>".$row['login']."</td>";
-                    echo "<td>".$row['nome']."</td>";           
-                    
-                    echo "<td>";
-                        if(isset($_SESSION['ID']))
-                        {
-                            if($row['id'] != $_SESSION['ID'])
-                                echo "<a class='btn btn-default btn-xs' href='mensaxes.php?id=".$row['id']."'><span class='glyphicon glyphicon-envelope' data-toggle='tooltip' data-placement='top' title='Enviar mensaxe'></span></a> ";
-                            if((($row['id'] != $_SESSION['ID']) && ($_SESSION['ID'] == $torneo->getIDPropietario())) || $usuarioActual->admin())
-                                echo "<a class='btn btn-danger btn-xs' href='torneo_remove.php?id=".$id."&usuario=".$row['id']."'><span class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' data-placement='top' title='Expulsar usuario'></span></a> ";
-                        }
-                        
-                    echo "</td>";
-                echo "</tr>";
+                $partidos=$torneo->partidosEquipo($row['ID_equipo']);
+
+                $equipo=array();
+                $n=0;
+                $v=0;
+                $e=0;
+                $d=0;
+
+                while($p = $partidos->fetch_assoc())
+                {
+                    if($row["ID_equipo"] == $p["ID_equipo1"])
+                    {
+                        if($p["resultado_eq1"] > $p["resultado_eq2"])
+                            $v++;
+                        if($p["resultado_eq1"] == $p["resultado_eq2"])
+                            $e++;
+                        if($p["resultado_eq1"] < $p["resultado_eq2"])
+                            $d++;
+                    }
+                    else
+                    {
+                        if($p["resultado_eq1"] < $p["resultado_eq2"])
+                            $v++;
+                        if($p["resultado_eq1"] == $p["resultado_eq2"])
+                            $e++;
+                        if($p["resultado_eq1"] > $p["resultado_eq2"])
+                            $d++;
+                    }
+                    $n++;                    
+                }
+
+                $puntos = $v*$torneo->getPuntosVictoria() + $e*$torneo->getPuntosEmpate() + $d*$torneo->getPuntosDerrota();
+                $equipo[0]= $puntos;
+                $equipo[1] = $row["nome"];
+                $equipo[2] = $v;
+                $equipo[3] = $e;
+                $equipo[4] = $d;
+                $equipo[5] = $n;
+                $equipo[6] = $row["ID_equipo"];
+
+                $clasificacion[]=$equipo;     
             }
+        }
+
+
+        echo "
+            <table class='table table-striped table-hover'>
+                <tr>
+                    <th>#</th>
+                    <th>Puntos</th>
+                    <th>Equipo</th>
+                    <th>V</th>
+                    <th>E</th>
+                    <th>D</th>
+                    <th>Xogados</th>
+                </tr>
+        ";
+
+
+        usort($clasificacion, function($a, $b) {
+            return $b[0] - $a[0];
+        });
+
+        for ($i=0; $i<count($clasificacion);$i++)
+        {
+            echo "<tr>";
+                echo "<td>".($i +1)."</td>";
+                echo "<td>".$clasificacion[$i][0]."</td>";
+                echo "<td><a href='equipo.php?id=".$clasificacion[$i][6]."'>".$clasificacion[$i][1]."</a></td>";
+                echo "<td>".$clasificacion[$i][2]."</td>";
+                echo "<td>".$clasificacion[$i][3]."</td>";
+                echo "<td>".$clasificacion[$i][4]."</td>";
+                echo "<td>".$clasificacion[$i][5]."</td>";
+            echo "</tr>";
         }
 
         echo "</table>";
-
-        if(isset($_SESSION['ID']))
-        {
-            //se o usuario actual non ten torneo
-            //unirse
-            if(!$usuarioActual->getIDequipo())
-            {
-                echo '
-                    <div class="col-sm-2">            
-                        <a href="equipo_join.php?id='.$id.'" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Unirme ao equipo</a>
-                    </div>
-                ';
-            }
-
-            //se o usuario actual é membro do equipo e non é o propietario
-            //sair
-            if(($_SESSION['ID'] != $equipo->getIDPropietario()) && ($usuarioActual->getIDequipo() == $id))
-            {
-                echo'
-                    <div class="col-sm-2">
-                        <a href="equipo_leave.php?id='.$id.'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Sa&iacute;r do equipo</a>
-                    </div>
-                ';
-            }
-
-            //se o usuario actual é admin ou o propietario
-            //eliminar
-            if(($_SESSION['ID'] == $equipo->getIDPropietario()) || $usuarioActual->admin())
-            {
-                echo'
-                    <div class="col-sm-2">
-                        <a href="equipo_delete.php?id='.$id.'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span> Eliminar equipo</a>
-                    </div>
-                ';
-            }
-        }
 
 
 ?>

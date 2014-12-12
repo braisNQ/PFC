@@ -98,7 +98,7 @@
     
             <ul class="nav nav-tabs" role="tablist">
                 <li <?php if($tab=="clasificacion") echo 'class="active"'; ?>><a href="torneo.php?id=<?php echo $id; ?>&tab=clasificacion">Clasificaci&oacute;n</a></li>
-                <li <?php if($tab=="partidos") echo 'class="active"'; ?>><a href="torneo.php?id=<?php echo $id; ?>&tab=partidos">Partidos restantes</a></li>
+                <li <?php if($tab=="partidos") echo 'class="active"'; ?>><a href="torneo.php?id=<?php echo $id; ?>&tab=partidos">Partidos</a></li>
                 <li <?php if($tab=="mods") echo 'class="active"'; ?>><a href="torneo.php?id=<?php echo $id; ?>&tab=mods">Moderadores</a></li>
                 <?php
                     if(isset($_SESSION['ID']))
@@ -163,11 +163,40 @@
     
     if($tab == "partidos")
     {
-        
+        include("lista_partidos.php");
     }//partidos
 
     if($tab == "mods")
-    {
+    {    
+        $lista = $torneo->listaMods();        
+        echo "
+            <table class='table table-striped table-hover'>
+                <tr>
+                    <th>Nome</th>
+                    <th>&nbsp;</th>
+                </tr>
+        ";
+
+        if($lista->num_rows > 0)
+        {
+            while($row = $lista->fetch_assoc())
+            {
+                echo "<tr>";
+                    echo "<td>".$row['nome']."</a></td>"; 
+                    echo "<td>";
+                    if(isset($_SESSION['ID']))
+                    {
+                        if($row['ID'] != $_SESSION['ID'])
+                            echo "<a class='btn btn-default btn-xs' href='mensaxe_send.php?id=".$row['ID']."'><span class='glyphicon glyphicon-envelope' data-toggle='tooltip' data-placement='top' title='Enviar mensaxe'></span></a> ";
+                        if($usuarioActual->admin())
+                            echo "<a class='btn btn-danger btn-xs' href='mod_remove.php?id=".$row['ID']."&torneo=".$id."'><span class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' data-placement='top' title='Quitar moderador'></span></a> ";
+                    }
+                        
+                    echo "</td>";
+                echo "</tr>";
+            }
+        }
+        echo "</table>";    
         
     }//mods
     

@@ -37,21 +37,28 @@
       <div class="jumbotron">
         <h1>Plataforma de xesti&oacute;n de torneos online</h1>
         <p>
-        A idea deste proxecto xorde pola necesidade dun grupo de xente dedicada a organizar eventos e torneos
-         de ter unha ferramenta acorde aos tempos actuais que lles permita realizar o seu traballo.
+        Na actualidade as tecnoloxías da información e as comunicacións (TIC) están presentes na maioría 
+        dos ámbitos da sociedade e se poden ver en innumerables contextos. Dende os sistemas 
+        organizativos de grandes empresas ata o ocio pasan polo campo da informática.
         </p>
         <p>
-        Actualmente todo o proceso é manual, polo que é moi laborioso e complicado e pode dar lugar a erros. 
-        Por isto, cómpre ter unha aplicación que realice todo o proceso de creación dos eventos dun xeito máis 
-        sinxelo e eficaz.
+        A idea deste Proxecto xorde pola necesidade dun grupo de persoas dedicadas a organizar eventos e 
+        torneos de ter unha ferramenta acorde aos tempos actuais que lles permita realizar o seu traballo 
+        máis comodamente.
         </p>
         <p>
-        Preténdese con este proxecto poder crear unha infraestrutura capaz de informatizar todo o proceso de creación, 
-        administración e desenvolvemento dos torneos e proporcionar os servizos necesarios para que mellore a experiencia 
-        dos usuarios durante a súa estadía na páxina web, seguindo ao detalle os acontecementos, así como xestionando os mesmos.
+        Actualmente todo o proceso é manual, polo que é moi laborioso e complicado e pode dar lugar a 
+        erros. Por isto, cómpre ter unha aplicación que realice todo o proceso de creación dos eventos dun 
+        xeito máis sinxelo e eficaz.
         </p>
         <p>
-        O código deste PFC estará dispoñible ao público baixo licenza GPL V3 (ou superior) no perfil de GitHub do autor cando estea rematado.
+        Preténdese con este Proxecto poder crear unha infraestrutura capaz de informatizar todo o proceso 
+        de creación, administración e desenvolvemento dos torneos e proporcionar os servizos necesarios 
+        para que mellore a experiencia dos usuarios durante a súa estadía na páxina web, seguindo ao 
+        detalle os acontecementos, así como xestionando os mesmos.
+        </p>
+        <p>
+        O código deste PFC estará dispoñible ao público baixo licenza GPL V3 (ou superior) no perfil de GitHub do autor unha vez rematado.
         </p>
         <p>
         <a class="btn btn-lg btn-primary" href="https://github.com/braisNQ/PFC" target="_blank" role="button">Ver en GitHub &raquo;</a>

@@ -165,6 +165,68 @@ class usuario
             
             return $toret;
         }
+      
+      /*
+       * función numMensaxes()
+       * devolve o número de mensaxes do usuario
+       */
+        function numMensaxes()
+        {
+            $sql = "select * from Mensaxe where ID_destinatario = '".$this->id."'";
+            $u = mysqli_query($this->bd->conexion, $sql);    
+                
+            $toret= 0;
+                
+            if($u->num_rows > 0)
+            {
+                $toret = $u->num_rows;
+            }
+            
+            return $toret;
+        }
+      
+      /*
+       * función listarMensaxesCont($f)
+       * devolve o numero de mensaxes do usuario que correspondan a un filtro
+       */
+        function listarMensaxesCont($f)
+        {
+            $sql = "select * from Mensaxe where ID_destinatario = '".$this->id."'";
+
+            if($f == "novas")
+                $sql = $sql." and visto = 0";
+            if($f == "vistas")
+                $sql = $sql." and visto = 1";
+
+            $u = mysqli_query($this->bd->conexion, $sql);    
+                
+            $toret= 0;
+                
+            if($u->num_rows > 0)
+            {
+                $toret = $u->num_rows;
+            }
+            
+            return $toret;
+        }
+
+        /*
+       * función listarMensaxes($f)
+       * devolve as mensaxes do usuario que correspondan a un filtro
+       */
+        function listarMensaxes($f, $inicio, $items)
+        {
+            $sql = "select ID, ID_remitente, (select nome from Usuario where Usuario.ID = Mensaxe.ID_remitente) as remitente, asunto, visto, data from Mensaxe where ID_destinatario = '".$this->id."'";
+
+            if($f == "novas")
+                $sql = $sql." and visto = 0";
+            if($f == "vistas")
+                $sql = $sql." and visto = 1";
+                     
+            $sql = $sql." limit " . $inicio . "," . $items." " ;
+            
+            return mysqli_query($this->bd->conexion, $sql); 
+        }
     
     /*
      * función modTorneo($idtorneo)
@@ -226,6 +288,51 @@ class usuario
         $this->tipo = $nivel;
         return mysqli_query($this->bd->conexion, $sql);
     }
+
+    /*
+     * función darMod($id)
+     * actualiza o usuario para darlle nivel de moderador
+     */
+    function darMod($id)
+    {
+        if($this->tipo != 1)
+        {
+            $sql = "update Usuario set tipo = 2 where ID = '".$this->id."'";
+        }
+        $this->tipo = 2;
+        $toret = mysqli_query($this->bd->conexion, $sql);
+
+        $sql = "insert into TorneoModerador (ID_torneo, ID_moderador) values ('".$id."', '".$this->id."')";
+
+
+        return ($toret && mysqli_query($this->bd->conexion, $sql));
+    }
+
+    /*
+     * función quitarMod($id)
+     * quitar permisos de moderación nun torneo
+     */
+    function quitarMod($id)
+    {
+        $sql = "delete from TorneoModerador where ID_torneo='".$id."' and ID_moderador = '".$this->id."'";
+        $toret = mysqli_query($this->bd->conexion, $sql);
+
+        $nivel = 3;
+
+        $sql = "select * from TorneoModerador where ID_moderador = '".$this->id."'";
+        $u = mysqli_query($this->bd->conexion, $sql);    
+        
+        if($u->num_rows > 0)
+            $nivel = 2;
+
+        if($this->tipo != 1)
+        {
+           $sql = "update Usuario set tipo = '".$nivel."' where ID = '".$this->id."'";
+        }
+        $this->tipo = $nivel;
+        
+        return ($toret && mysqli_query($this->bd->conexion, $sql));
+    }
     
     /*
      * función eliminar()
@@ -233,8 +340,14 @@ class usuario
      */
     function eliminar()
     {
+        $sql = "update Usuario set ID_equipo = NULL where ID_equipo ='".$this->ID_equipo."'";
+        $toret = mysqli_query($this->bd->conexion, $sql);
+        
+        $sql = "delete from Equipo where ID='".$this->ID_equipo."'";        
+        $toret = ($toret && mysqli_query($this->bd->conexion, $sql));
+
         $sql = "delete from Usuario where ID='".$this->id."'";        
-        return mysqli_query($this->bd->conexion, $sql);
+        return ($toret && mysqli_query($this->bd->conexion, $sql));
     }
     
     /*
@@ -304,6 +417,23 @@ class usuario
             $toret = true;
         return $toret;
      }
+
+
+     /*
+      * función enviarMensaxe($id, $asunto, $txt, $data)
+      * inserta na BD unha nova mensaxe
+      * devolve o resultado de executar a consulta
+      */
+     function enviarMensaxe($id, $asunto, $txt, $data)
+     {
+        $a = mysqli_real_escape_string($this->bd->conexion, $asunto);
+        $t = mysqli_real_escape_string($this->bd->conexion, $txt);      
+        
+        $sql = "insert into Mensaxe (ID_remitente, ID_destinatario, data, asunto, texto, visto) values ('".$this->id."', '".$id."', '".$data."', '".$a."', '".$t."', 0)";
+
+        return mysqli_query($this->bd->conexion, $sql);
+     }
+
 }
 
 ?>
