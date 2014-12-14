@@ -33,8 +33,8 @@
 
     <div class="container">
 
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
           
       
      <?php
@@ -122,11 +122,7 @@
                 aviso("danger", "Xa pertences a un equipo.", "equipo.php?id=".$usuarioActual->getIDequipo(), "Ir ao meu equipo");
             }
         }
-?>
-          
-          
-          
-          
+?>        
           
       </div> <!--jumbo -->  
     </div> <!-- /container -->

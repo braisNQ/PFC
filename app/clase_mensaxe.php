@@ -18,7 +18,7 @@ class mensaxe
     
     /*
      * función __construct
-     * crea un obxecto partido a partir da súa ID
+     * crea un obxecto mensaxe a partir da súa ID
      */
     function __construct($i)
     {
@@ -69,7 +69,6 @@ class mensaxe
         return $this->existe;
      }
 
-
      /*
      * función setVisto()
      * marca a mensaxe como vista
@@ -80,33 +79,58 @@ class mensaxe
         return mysqli_query($this->bd->conexion, $sql);
      }
 
+     /*
+     * función getAsunto()
+     * devolve o asunto da mensaxe
+     */
      function getAsunto()
      {
         return $this->asunto;
      }
 
+     /*
+     * función getTexto()
+     * devolve o Texto da mensaxe
+     */
      function getTexto()
      {
         return $this->texto;
      }
+
+     /*
+     * función getDestinatario()
+     * devolve a ID do destinatario
+     */
      function getDestinatario()
      {
         return $this->ID_destinatario;
      }
+
+     /*
+     * función getRemitente()
+     * devolve a ID do remitente
+     */
      function getRemitente()
      {
         return $this->ID_remitente;
      }
 
+     /*
+     * función getNomeRemitente()
+     * devolve o nome do remitente
+     */
      function getNomeRemitente()
      {
         return $this->nomeRemitente;
      }
 
+     /*
+     * función eliminar()
+     * elimina a mensaxe da BD
+     */
      function eliminar()
      {        
         $sql = "delete from Mensaxe where ID='".$this->id."'";        
         return (mysqli_query($this->bd->conexion, $sql));
      }
-
 }

@@ -37,7 +37,7 @@
     <meta name="description" content="Plataforma xestion torneos online">
     <meta name="author" content="Brais Carrion">
 
-    <title>Plataforma de xesti&oacute;n de torneos online</title>
+    <title>Plataforma de Xesti&oacute;n de Torneos Online</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">

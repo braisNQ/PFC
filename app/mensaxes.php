@@ -41,7 +41,7 @@
     //se non existe usuario logueado
     if(!isset($_SESSION['ID']))
     {
-        aviso("danger", "Ups! non deberías estar aqu&iacute;.", "index.php", "Voltar ao inicio");
+        aviso("danger", "Ups! non deberías estar aqu&iacute;.", "index.php", "Voltar ao Inicio");
     }
     //se está logueado
     else

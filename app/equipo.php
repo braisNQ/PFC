@@ -34,7 +34,6 @@
     <div class="container">
         <div class="jumbotron">
 <?php
-
                 
     //se non existe ID
     if(!isset($_GET['id']) && !isset($_POST['id']))
@@ -247,7 +246,6 @@
         {
 ?>
 
-
     <form class="form-horizontal" role="form" id="formEditar" action="equipo.php" method="post">
         <input type="hidden" value="<?php echo $id;?>" name="id" id="id">
         <div class="form-group">
@@ -275,9 +273,6 @@
 <?php  
         } 
     }//editar
-    
-    
-            
             
 ?>
         </fieldset>

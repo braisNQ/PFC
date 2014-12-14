@@ -81,11 +81,19 @@ class partido
         return $this->existe;
      }
 
+     /*
+     * fuinción getIDtorneo()
+     * devolve a id do torneo
+     */
      function getIDtorneo()
      {
         return $this->ID_torneo;
      }
 
+     /*
+     * fuinción editar($r1, $r2)
+     * Actualiza o resultado do partido
+     */
      function editar($r1, $r2)
      {
         $data=date('Y-m-d H:i:s');
@@ -93,30 +101,48 @@ class partido
         return mysqli_query($this->bd->conexion, $sql); 
      }
 
+     /*
+     * fuinción resultado1()
+     * devolve o resultado do equipo 1
+     */
      function resultado1()
      {
         return $this->resultado_eq1;
      }
 
+     /*
+     * fuinción resultado2()
+     * devolve o resultado do equipo 2
+     */
      function resultado2()
      {
         return $this->resultado_eq2;
      }
 
+     /*
+     * fuinción getNomeEQ1()
+     * devolve o nome do equipo 1
+     */
      function getNomeEQ1()
      {
         return $this->nome1;
      }
 
+     /*
+     * fuinción getNomeEQ2()
+     * devolve o nome do equipo 2
+     */
      function getNomeEQ2()
      {
         return $this->nome2;
      }
 
+     /*
+     * fuinción getData()
+     * devolve a data do partido
+     */
      function getData()
      {
         return $this->data;
      }
-
-
 }

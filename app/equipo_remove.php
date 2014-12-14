@@ -33,8 +33,8 @@
 
     <div class="container">
 
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
         
 <?php
     //se chega sen loguear ou non é admin
@@ -68,8 +68,7 @@
                 aviso("danger", "Ups! non deberías estar aqu&iacute;.", "lista_equipos.php", "Voltar &aacute; lista de equipos");
             } 
             else
-            {
-            
+            {            
                 //se se pulsou o botón
                 if(isset($_POST['accion']))
                 {
@@ -105,8 +104,7 @@
                     ';
                 }
             }
-        }
-            
+        }            
     }
 
 ?>

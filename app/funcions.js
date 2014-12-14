@@ -73,5 +73,3 @@ function activarEdicionTorneo()
     document.forms["formEditar"].elements["btnHabilitar"].style.visibility = "hidden";
     document.forms["formEditar"].elements["btnHabilitar"].disabled = true;
 }
-
-

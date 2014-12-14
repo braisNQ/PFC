@@ -40,13 +40,13 @@
     //se chega sen loguear
     if(!isset($_SESSION['ID']))
     {
-        aviso("danger", "Ups! non deberías estar aqu&iacute;.", "index.php", "Voltar ao inicio");
+        aviso("danger", "Ups! non deberías estar aqu&iacute;.", "index.php", "Voltar ao Inicio");
     }
     else
     {
         //se non hai ningunha id
         if(!isset($_GET['id']) && !isset($_POST['id']))
-            aviso("danger", "Ocorreu alg&uacute;n erro ao obter a mensaxe.", "index.php", "Voltar ao inicio");
+            aviso("danger", "Ocorreu alg&uacute;n erro ao obter a mensaxe.", "index.php", "Voltar ao Inicio");
         else
         {        
             $id;

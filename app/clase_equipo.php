@@ -15,13 +15,6 @@ class equipo
     private $existe;
     
     /*
-     * tipo
-     * 1- administrador/a
-     * 2- moderador/a
-     * 3- usuaria/o
-     */
-    
-    /*
      * función __construct
      * crea un obxecto equipo a partir da súa ID
      */
@@ -172,7 +165,5 @@ class equipo
 
         $sql = "update Equipo set nome = '".$n."', codigo_ingreso = '".$c."' where ID = '".$this->id."'";
         return mysqli_query($this->bd->conexion, $sql);
-     }    
-     
-     
+     }
 }

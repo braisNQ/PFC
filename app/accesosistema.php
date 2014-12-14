@@ -38,13 +38,13 @@
                             $_SESSION['ID'] = $row['ID'];
                         }
                     }
-                    aviso("success", "Noraboa ".$_POST['inputNomeRexistro']."! Rexistr&aacute;cheste correctamente.", "index.php", "Voltar ao Index");
+                    aviso("success", "Noraboa ".$_POST['inputNomeRexistro']."! Rexistr&aacute;cheste correctamente.", "index.php", "Voltar ao Inicio");
                 }
                 else
-                    aviso("danger", "Algo foi mal durante o rexistro.", "index.php", "Voltar ao Index");
+                    aviso("danger", "Algo foi mal durante o rexistro.", "index.php", "Voltar ao Inicio");
             }
             else
-                aviso("danger", "O login que elixiches xa está en uso.", "index.php", "Voltar ao Index");        
+                aviso("danger", "O login que elixiches xa está en uso.", "index.php", "Voltar ao Inicio");        
         }
     
         if ($accion=="login")
@@ -61,12 +61,12 @@
                 header("location:index.php");
             }
             else
-                aviso("danger", "Usuario ou contrasinal incorrecto.", "index.php", "Voltar ao Index");
+                aviso("danger", "Usuario ou contrasinal incorrecto.", "index.php", "Voltar ao Inicio");
     
         }
     }
     else
-        aviso("danger", "Xa hai unha sesión aberta no navegador.", "index.php", "Voltar ao Index");
+        aviso("danger", "Xa hai unha sesión aberta no navegador.", "index.php", "Voltar ao Inicio");
     
 ?>
 

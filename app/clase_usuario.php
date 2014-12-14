@@ -210,23 +210,23 @@ class usuario
             return $toret;
         }
 
-        /*
-       * función listarMensaxes($f)
-       * devolve as mensaxes do usuario que correspondan a un filtro
-       */
-        function listarMensaxes($f, $inicio, $items)
-        {
-            $sql = "select ID, ID_remitente, (select nome from Usuario where Usuario.ID = Mensaxe.ID_remitente) as remitente, asunto, visto, data from Mensaxe where ID_destinatario = '".$this->id."'";
+    /*
+   * función listarMensaxes($f)
+   * devolve as mensaxes do usuario que correspondan a un filtro
+   */
+    function listarMensaxes($f, $inicio, $items)
+    {
+        $sql = "select ID, ID_remitente, (select nome from Usuario where Usuario.ID = Mensaxe.ID_remitente) as remitente, asunto, visto, data from Mensaxe where ID_destinatario = '".$this->id."'";
 
-            if($f == "novas")
-                $sql = $sql." and visto = 0";
-            if($f == "vistas")
-                $sql = $sql." and visto = 1";
-                     
-            $sql = $sql." limit " . $inicio . "," . $items." " ;
-            
-            return mysqli_query($this->bd->conexion, $sql); 
-        }
+        if($f == "novas")
+            $sql = $sql." and visto = 0";
+        if($f == "vistas")
+            $sql = $sql." and visto = 1";
+                 
+        $sql = $sql." limit " . $inicio . "," . $items." " ;
+        
+        return mysqli_query($this->bd->conexion, $sql); 
+    }
     
     /*
      * función modTorneo($idtorneo)
@@ -418,7 +418,6 @@ class usuario
         return $toret;
      }
 
-
      /*
       * función enviarMensaxe($id, $asunto, $txt, $data)
       * inserta na BD unha nova mensaxe
@@ -433,7 +432,6 @@ class usuario
 
         return mysqli_query($this->bd->conexion, $sql);
      }
-
 }
 
 ?>

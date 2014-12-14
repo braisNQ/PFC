@@ -164,45 +164,62 @@ class torneo
         return mysqli_query($this->bd->conexion, $sql);          
     }
 
+     /*
+     * fuinción getVoltas()
+     * devolve o número de voltas do torneo
+     */
     function getVoltas()
     {
         return $this->numero_voltas;
     }
 
+     /*
+     * fuinción iniciar()
+     * inicia o torneo
+     */
     function iniciar()
     {
         $sql = "update Torneo set iniciado=1 where ID='".$this->id."'";
         return mysqli_query($this->bd->conexion, $sql);
     }
 
+     /*
+     * fuinción crearPartido()
+     * inserta un novo partido na BD 
+     */
     function crearPartido($e1, $e2)
     {
         $sql = "insert into Partido (ID_equipo1, ID_equipo2, ID_torneo) values ('".$e1."', '".$e2."', '".$this->id."')";
         return mysqli_query($this->bd->conexion, $sql);
     }
 
+     /*
+     * fuinción listaPartidos()
+     * devolve a lista de partidos do torneo
+     */
     function listaPartidos()
     {
         $sql = "select ID, ID_equipo1, (select nome from Equipo where Equipo.ID = Partido.ID_equipo1) as nome1, ID_equipo2, (select nome from Equipo where Equipo.ID = Partido.ID_equipo2) as nome2, data, data_confirmada, resultado_eq1, resultado_eq2, resultado_confirmado from Partido where ID_torneo ='".$this->id."'";
         return mysqli_query($this->bd->conexion, $sql);  
     }
 
+     /*
+     * fuinción listaMods()
+     * devolve a lista de moderadores do torneo
+     */
     function listaMods()
     {
         $sql = "select ID, nome from Usuario where ID in (select ID_moderador from TorneoModerador where ID_torneo=".$this->id.")";
         return mysqli_query($this->bd->conexion, $sql);  
     }
 
+     /*
+     * fuinción partidosEquipo()
+     * devolve a lista de partidos dun equipo no torneo actual
+     */
     function partidosEquipo($id)
     {
         $sql = "select ID_equipo1, ID_equipo2, resultado_eq1, resultado_eq2 from Partido where ID_torneo ='".$this->id."' and (ID_equipo1 ='".$id."' or ID_equipo2 ='".$id."') and resultado_confirmado=1";
         return mysqli_query($this->bd->conexion, $sql);
     }
-
-
-
-
-
-
-
 }

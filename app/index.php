@@ -32,7 +32,6 @@
     -->
 
     <div class="container">
-
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <h1>Plataforma de xesti&oacute;n de torneos online</h1>
@@ -64,10 +63,6 @@
         <a class="btn btn-lg btn-primary" href="https://github.com/braisNQ/PFC" target="_blank" role="button">Ver en GitHub &raquo;</a>
         </p>
       </div>
-
-
-
-  
     </div> <!-- /container -->
     
 <?php include("footer.php"); ?>

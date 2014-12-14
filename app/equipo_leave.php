@@ -33,8 +33,8 @@
 
     <div class="container">
 
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
         
 <?php
     //se chega sen loguear
